@@ -1,3 +1,2 @@
 # ce216_project
-merhaba
-hello
+# include<Hello.Gardas>
