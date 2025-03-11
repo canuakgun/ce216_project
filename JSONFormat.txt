@@ -1,0 +1,147 @@
+EXAMPLE JSON FILE
+
+{
+
+
+"title": "The Witcher 3: Wild Hunt",
+"developer": "CD Projekt Red",
+"publisher": "CD Projekt",
+"genre": ["RPG", "Open-World"],
+"platforms": ["PC", "PlayStation", "Xbox"],
+"steamid": "292030",
+"release_year": "2015",
+"playtime": "150",
+"tags": ["Story-rich", "Fantasy"]
+
+}
+
+
+
+// parsing logic
+// for the single string attributes: first line first char will be (") after (") there will be string it defines the attribute till the (") sign.
+// load it to the String parsedParts[] for later to be added to Game class ( to work with addGame method)
+// after the second (") there will be a ( : ) sign , after this sign delete all whitespaces and again do the same logic at the 17th line
+// when the (,) appears and there is a whitespace after it means i can access to the line below
+// if there is no ( , ) appears at the end and there is a whitespace it means --> the file is done reading
+
+*************************************************************************************************************************************************
+//for the multi string attributes( for example: genre,tags,platforms): 
+// we will decide about how to store them -----> String[] genres, String[] tags, String[] platforms <------
+// again if after the (:) sign and removing the whitespaces if i counter with ([]) it means that it is a multi attribute
+// for multi attributes again the logic is same but here, after (,) go to the next element and look for (]) for understanding the line is done ( of course with the , ) --> line20
+// 
+
+// extra important memo
+// for the playtime,release_year,steamid we will get a string value from json BUT ( it can be changed into a int value by Integer.valueOf())
+
+
+
+
+
+
+
+
+
+
+
+
+
+// fileReader method  -------> Sample Code about how to use the jsonParser lib
+*********************************************************************************************************************
+//import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Iterator;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+public class JavaApplication1 {
+    public static void main(String[] args) {
+
+        JSONParser parser = new JSONParser();
+
+        try {     
+            Object obj = parser.parse(new FileReader("c:\\file.json"));
+
+            JSONObject jsonObject =  (JSONObject) obj;
+
+            String name = (String) jsonObject.get("name");
+            System.out.println(name); // do not print add to the Game object
+
+            String city = (String) jsonObject.get("city");
+            System.out.println(city);  // do not print add to the Game object
+
+            String job = (String) jsonObject.get("job");
+            System.out.println(job);  // do not print add to the Game object
+
+            // loop array                              // What is this !!!!!
+            JSONArray cars = (JSONArray) jsonObject.get("cars");
+            Iterator<String> iterator = cars.iterator();
+            while (iterator.hasNext()) {
+             System.out.println(iterator.next());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+*******************************************************************************************************************************
+
+// Making a jsonFile to a java Object 
+You can use jackson library and simply use these 3 lines to convert your json file to Java Object.
+
+ObjectMapper mapper = new ObjectMapper();
+InputStream is = Test.class.getResourceAsStream("/test.json");
+testObj = mapper.readValue(is, Test.class);
+
+
+*******************************************************************************************************************************
+public static ArrayList<Employee> readFromJsonFile(String fileName){
+        ArrayList<Employee> result = new ArrayList<Employee>();
+
+        try{
+            String text = new String(Files.readAllBytes(Paths.get(fileName)), StandardCharsets.UTF_8);
+
+            JSONObject obj = new JSONObject(text);
+            JSONArray arr = obj.getJSONArray("employees");
+
+            for(int i = 0; i < arr.length(); i++){
+                String name = arr.getJSONObject(i).getString("name");
+                short salary = Short.parseShort(arr.getJSONObject(i).getString("salary"));
+                String position = arr.getJSONObject(i).getString("position");
+                byte years_in_company = Byte.parseByte(arr.getJSONObject(i).getString("years_in_company")); 
+                if (position.compareToIgnoreCase("manager") == 0){
+                    result.add(new Manager(name, salary, position, years_in_company));
+                }
+                else{
+                    result.add(new OrdinaryEmployee(name, salary, position, years_in_company));
+                }
+            }           
+        }
+        catch(Exception ex){
+            System.out.println(ex.toString());
+        }
+        return result;
+    }
+    ******************************************************************************************************************************
+    
+
+
+// fileWriter method
+
+https://www.tutorialspoint.com/how-to-write-create-a-json-file-using-java
+https://www.geeksforgeeks.org/how-to-read-and-write-json-files-in-java/
+https://stackoverflow.com/questions/62947178/how-can-i-write-to-json-using-org-json
+
+
+// fileReader method sources
+https://www.geeksforgeeks.org/parse-json-java/
+https://www.geeksforgeeks.org/working-with-json-data-in-java/
+https://www.baeldung.com/gson-save-file#:~:text=Saving%20Data%20to%20a%20JSON,Gson%20gson%20%3D%20new%20Gson()%3B
