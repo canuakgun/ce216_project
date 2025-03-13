@@ -3,83 +3,91 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class app extends Application {
     @Override
     public void start(Stage primaryStage) {
-        // Left Sidebar for Filters
+        primaryStage.setTitle("Game Collection Catalog");
+        
+
+        VBox welcomeLayout = new VBox(20);
+        welcomeLayout.setPadding(new Insets(20));
+        welcomeLayout.setAlignment(Pos.CENTER);
+        Label welcomeLabel = new Label("Welcome to the Game Catalog Program");
+
+        
+        Image welcomeImage = new Image("file:C:/Users/ATİLA/OneDrive/Pictures/ADSC Studio.png");
+        ImageView imageView = new ImageView(welcomeImage);
+        imageView.setFitWidth(200); 
+        imageView.setFitHeight(200); 
+        imageView.setPreserveRatio(true); 
+
+        Button startButton = new Button("Start");
+        welcomeLayout.setStyle("-fx-background-color:rgb(68, 24, 30);");
+        welcomeLabel.setStyle("-fx-text-fill: white; -fx-font-size: 24;");
+        startButton.setStyle("-fx-background-color: #2b2b2b; -fx-text-fill: white; -fx-font-size: 16;");
+        welcomeLayout.getChildren().addAll(welcomeLabel, imageView, startButton);
+
+        Scene welcomeScene = new Scene(welcomeLayout, 400, 300);
+
+      
         VBox filterSidebar = new VBox(10);
         filterSidebar.setPadding(new Insets(10));
         filterSidebar.setStyle("-fx-background-color: #2b2b2b;");
 
-        // Create Accordion for collapsible filter sections
         Accordion accordion = new Accordion();
 
-        // Genre Filter with options
         TitledPane genrePane = createTitledPane("Genre", new CheckBox("Action"), new CheckBox("Adventure"),
                 new CheckBox("RPG"), new CheckBox("Simulation"), new CheckBox("Sports"), new CheckBox("Strategy"),
                 new CheckBox("Puzzle"), new CheckBox("Horror"), new CheckBox("Racing"), new CheckBox("Fighting"));
 
-        // Developer Filter with options
         TitledPane developerPane = createTitledPane("Developer", new CheckBox("Shigeru Miyamoto"),
                 new CheckBox("Hideo Kojima"), new CheckBox("Gabe Newell"), new CheckBox("Todd Howard"),
                 new CheckBox("Sid Meier"));
 
-        // Publisher Filter with options
         TitledPane publisherPane = createTitledPane("Publisher", new CheckBox("Electronic Arts (EA)"),
                 new CheckBox("Activision Blizzard"), new CheckBox("Ubisoft"), new CheckBox("Nintendo"),
                 new CheckBox("Sony Interactive Entertainment"));
 
-        // Platforms Filter with options
         TitledPane platformsPane = createTitledPane("Platforms", new CheckBox("XBOX"), new CheckBox("PS5"),
                 new CheckBox("PS4"), new CheckBox("NINTENDO"), new CheckBox("PC"));
 
-        // Translator Filter with options
         TitledPane translatorPane = createTitledPane("Translator", new CheckBox("Gregory Rabassa"),
                 new CheckBox("Edith Grossman"), new CheckBox("Suat Karantay"));
 
-        // Release Year Filter with options
         TitledPane releaseYearPane = createTitledPane("Release Year", new CheckBox("1990-1995"),
                 new CheckBox("1995-2000"), new CheckBox("2000-2005"), new CheckBox("2005-2010"),
-                new CheckBox("2010-2015"));
+                new CheckBox("2010-2015"), new CheckBox("2015-2020"), new CheckBox("2020-2025"));
 
-        // Playtime Filter with options
         TitledPane playtimePane = createTitledPane("Playtime", new CheckBox("1-5"), new CheckBox("5-15"),
                 new CheckBox("15-30"), new CheckBox("30-70"), new CheckBox("70-140"));
 
-        // Format Filter with options
         TitledPane formatPane = createTitledPane("Format", new CheckBox("pepe"), new CheckBox("ceke"),
                 new CheckBox("deke"));
 
-        // Language Filter with options
-        TitledPane languagePane = createTitledPane("Language", new CheckBox("Türkçe"), new CheckBox("İngilizce"),
-                new CheckBox("Almanca"), new CheckBox("Rusça"), new CheckBox("Çince"), new CheckBox("Japonca"));
+        TitledPane languagePane = createTitledPane("Language", new CheckBox("Turkish"), new CheckBox("English"),
+                new CheckBox("German"), new CheckBox("Russian"), new CheckBox("Chinese"), new CheckBox("Japanese"));
 
-        // Rating Filter with options
         TitledPane ratingPane = createTitledPane("Rating", new CheckBox("0-20"), new CheckBox("20-40"),
                 new CheckBox("40-60"), new CheckBox("60-80"), new CheckBox("80-100"));
 
-        // Add TitledPanes to Accordion
         accordion.getPanes().addAll(genrePane, developerPane, publisherPane, platformsPane, translatorPane, releaseYearPane,
                 playtimePane, formatPane, languagePane, ratingPane);
 
-        // Scrollable area for filters
         ScrollPane scrollPane = new ScrollPane(accordion);
         scrollPane.setFitToWidth(true);
-        scrollPane.setPrefHeight(600); // Set max height for scrolling
+        scrollPane.setPrefHeight(600);
 
-        // Apply Filters Button
         Button applyFilters = new Button("Apply Filters");
 
         applyFilters.setOnAction(e -> {
-            // Handle filtering logic based on selected checkboxes
             System.out.println("Filtering games with the selected criteria...");
-            // Add the filter logic as before...
         });
 
-        // Top Bar with Search and Buttons
         HBox topBar = new HBox(10);
         topBar.setPadding(new Insets(10));
         topBar.setStyle("-fx-background-color: #1b1b1b;");
@@ -94,14 +102,12 @@ public class app extends Application {
 
         topBar.getChildren().addAll(searchField, importButton, exportButton, helpButton);
 
-        // Main Content Area for Game Cards
         FlowPane gamePane = new FlowPane();
         gamePane.setPadding(new Insets(10));
         gamePane.setHgap(10);
         gamePane.setVgap(10);
         gamePane.setStyle("-fx-background-color: #3b3b3b;");
 
-        // Placeholder Game Cards
         for (int i = 1; i <= 6; i++) {
             VBox gameCard = new VBox(5);
             gameCard.setPadding(new Insets(5));
@@ -116,15 +122,17 @@ public class app extends Application {
             gamePane.getChildren().add(gameCard);
         }
 
-        // Main Layout
         BorderPane mainLayout = new BorderPane();
-        mainLayout.setLeft(scrollPane); // Use scrollable filter sidebar
+        mainLayout.setLeft(scrollPane);
         mainLayout.setTop(topBar);
         mainLayout.setCenter(gamePane);
 
-        Scene scene = new Scene(mainLayout, 1200, 800);
-        primaryStage.setTitle("Game Collection Catalog");
-        primaryStage.setScene(scene);
+        Scene mainScene = new Scene(mainLayout, 1200, 800);
+
+        
+        startButton.setOnAction(e -> primaryStage.setScene(mainScene));
+
+        primaryStage.setScene(welcomeScene);
         primaryStage.show();
     }
 
@@ -136,13 +144,9 @@ public class app extends Application {
             vbox.getChildren().add(checkbox);
         }
 
-        // Create the TitledPane with customized styles
         TitledPane titledPane = new TitledPane(title, vbox);
         titledPane.setStyle("-fx-base: #333333; -fx-text-fill: white; -fx-font-size: 14;");
-
-        // Set custom style for the header (title)
-        titledPane.setStyle("-fx-base: #333333; -fx-text-fill: white; -fx-font-size: 14;");
-        titledPane.setExpanded(false);  // By default, panes are collapsed
+        titledPane.setExpanded(false);
 
         return titledPane;
     }
