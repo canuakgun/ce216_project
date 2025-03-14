@@ -1,23 +1,23 @@
-
+import java.util.List;
 
 public class Game {
     private String gameTitle;
     private String gameDeveloper;
     private String gamePublisher;
-    private String gameGenre;
-    private String gamePlatforms;
-    private String gameSteamID;
+    private List<String>  gameGenre;
+ private List<String> gamePlatforms;   
+  private String gameSteamID;
     private String gameReleaseYear;
     private String gamePlaytime;
-    private String gameTags;
+    private List<String> gameTags;
     // for the genres,tags and platforms we can have multiple so we decided to use a ["x","y"] bracket for the multiple variable attributes so that in the parsing part we can easily apart them from others;
 
 
     public Game() { }
 
-    public Game(String gameTitle, String gameDeveloper, String gamePublisher, String gameGenre,
-                String gamePlatforms, String gameSteamID, String gameReleaseYear, String gamePlaytime,
-                String gameTags) {
+    public Game(String gameTitle, String gameDeveloper, String gamePublisher,   List<String>  gameGenre,
+                List<String> gamePlatforms, String gameSteamID, String gameReleaseYear, String gamePlaytime,
+                 List<String> gameTags) {
         this.gameTitle = gameTitle;
         this.gameDeveloper = gameDeveloper;
         this.gamePublisher = gamePublisher;
@@ -57,19 +57,19 @@ public class Game {
         this.gamePublisher = gamePublisher;
     }
 
-    public String getGameGenre() {
+    public   List<String>  getGameGenre() {
         return gameGenre;
     }
 
-    public void setGameGenre(String gameGenre) {
+    public void setGameGenre(List<String>  gameGenre) {
         this.gameGenre = gameGenre;
     }
 
-    public String getGamePlatforms() {
+    public List<String>  getGamePlatforms() {
         return gamePlatforms;
     }
 
-    public void setGamePlatforms(String gamePlatforms) {
+    public void setGamePlatforms(List<String>  gamePlatforms) {
         this.gamePlatforms = gamePlatforms;
     }
 
@@ -97,11 +97,11 @@ public class Game {
         this.gamePlaytime = gamePlaytime;
     }
 
-    public String getGameTags() {
+    public List<String>  getGameTags() {
         return gameTags;
     }
 
-    public void setGameTags(String gameTags) {
+    public void setGameTags(List<String>  gameTags) {
         this.gameTags = gameTags;
     }
 
