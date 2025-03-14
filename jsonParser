@@ -1,3 +1,55 @@
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import org.json.JSONObject;
+import org.json.JSONArray;
+
 public class jsonParser {
-    // TO BE CONTINUED...
+
+    public static ArrayList<Game> readFromJsonFile(String fileName) {
+        ArrayList<Game> result = new ArrayList<>();
+
+        try {
+            String text = new String(Files.readAllBytes(Paths.get(fileName)), StandardCharsets.UTF_8);
+            JSONObject obj = new JSONObject(text);
+            JSONArray arr = obj.getJSONArray("games"); 
+
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject gameObj = arr.getJSONObject(i);
+                String title = gameObj.getString("title");
+                String developer = gameObj.getString("developer");
+                String publisher = gameObj.getString("publisher");
+
+                JSONArray genresArray = gameObj.getJSONArray("genres");
+                List<String> genres = new ArrayList<>();
+                for (int j=0; j<genresArray.getLength();j++)
+                genres.add(genresArray.getString(j));
+
+                JSONArray platformsArray = gameObj.getJSONArray("platforms");
+                List<String> platforms = new ArrayList<>();
+                for (int j = 0; j < platformsArray.length(); j++) {
+                    platforms.add(platformsArray.getString(j));
+            
+                }
+
+                JSONArray tagsArray = gameObj.getJSONArray("tags");
+                List<String> tags = new ArrayList<>();
+                for (int j = 0; j < tagsArray.length(); j++) {
+                    tags.add(tagsArray.getString(j));
+                }
+
+                String steamID = gameObj.getString("steamID");
+                String releaseYear = gameObj.getString("releaseYear");
+                String playtime = gameObj.getString("playtime");
+
+                Game game = new Game(title, developer, publisher, genres, platforms, steamID, releaseYear, playtime, tags);
+                result.add(game);
+            }
+        } catch (Exception exception) {
+            System.out.println(exception.toString());
+        }
+        return result;
+    }
 }
