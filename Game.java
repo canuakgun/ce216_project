@@ -1,3 +1,5 @@
+package com.example.gamecatalogproject;
+
 import java.util.List;
 
 public class Game {
@@ -5,8 +7,8 @@ public class Game {
     private String gameDeveloper;
     private String gamePublisher;
     private List<String>  gameGenre;
- private List<String> gamePlatforms;   
-  private String gameSteamID;
+    private List<String> gamePlatforms;
+    private String gameSteamID;
     private String gameReleaseYear;
     private String gamePlaytime;
     private List<String> gameTags;
@@ -17,7 +19,7 @@ public class Game {
 
     public Game(String gameTitle, String gameDeveloper, String gamePublisher,   List<String>  gameGenre,
                 List<String> gamePlatforms, String gameSteamID, String gameReleaseYear, String gamePlaytime,
-                 List<String> gameTags) {
+                List<String> gameTags) {
         this.gameTitle = gameTitle;
         this.gameDeveloper = gameDeveloper;
         this.gamePublisher = gamePublisher;
@@ -29,7 +31,7 @@ public class Game {
         this.gameTags = gameTags;
     }
 
-    public void printGameTitle() { 
+    public void printGameTitle() {
         System.out.println("Game Title: " + getGameTitle());
     }
 
@@ -105,12 +107,12 @@ public class Game {
         this.gameTags = gameTags;
     }
 
-    
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Game game = (Game) obj;
-        return gameTitle != null && gameTitle.equals(game.gameTitle); 
+        return gameTitle != null && gameTitle.equals(game.gameTitle);
     }
 }
