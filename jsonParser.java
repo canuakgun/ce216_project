@@ -1,8 +1,5 @@
-package com.example.gamecatalogproject;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,10 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JSONParser {
-
     public ArrayList<Game> readFromJsonFile(String fileName) {
         ArrayList<Game> result = new ArrayList<>();
-
         System.out.println("Attempting to load from: " + Paths.get(fileName).toAbsolutePath());
 
         try {
@@ -47,6 +42,33 @@ public class JSONParser {
         return result;
     }
 
+    public boolean saveToJsonFile(String fileName, List<Game> games) {
+        try {
+            JSONArray jsonArray = new JSONArray();
+            for (Game game : games) {
+                JSONObject gameObj = new JSONObject();
+                gameObj.put("title", game.getGameTitle());
+                gameObj.put("developer", game.getGameDeveloper());
+                gameObj.put("publisher", game.getGamePublisher());
+                gameObj.put("genres", new JSONArray(game.getGameGenre()));
+                gameObj.put("platforms", new JSONArray(game.getGamePlatforms()));
+                gameObj.put("steamID", game.getGameSteamID());
+                gameObj.put("releaseYear", game.getGameReleaseYear());
+                gameObj.put("playtime", game.getGamePlaytime());
+                gameObj.put("tags", new JSONArray(game.getGameTags()));
+                
+                jsonArray.put(gameObj);
+            }
+
+            Files.write(Paths.get(fileName), jsonArray.toString(2).getBytes(StandardCharsets.UTF_8));
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error saving to JSON file: " + e.toString());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private void processGamesArray(JSONArray arr, ArrayList<Game> result) {
         for (int i = 0; i < arr.length(); i++) {
             JSONObject gameObj = arr.getJSONObject(i);
@@ -63,20 +85,17 @@ public class JSONParser {
             String developer = gameObj.getString("developer");
             String publisher = gameObj.getString("publisher");
 
-            // Handle both "genre" and "genres" for backward compatibility
-            JSONArray genresArray = gameObj.has("genres") ?
+            JSONArray genresArray = gameObj.has("genres") ? 
                     gameObj.getJSONArray("genres") : gameObj.getJSONArray("genre");
             List<String> genres = jsonArrayToList(genresArray);
 
             JSONArray platformsArray = gameObj.getJSONArray("platforms");
             List<String> platforms = jsonArrayToList(platformsArray);
 
-            // Handle both "steamid" and "steamID" for backward compatibility
-            String steamID = gameObj.has("steamID") ?
+            String steamID = gameObj.has("steamID") ? 
                     gameObj.getString("steamID") : gameObj.getString("steamid");
 
-            // Handle both "release_year" and "releaseYear" for backward compatibility
-            String releaseYear = gameObj.has("releaseYear") ?
+            String releaseYear = gameObj.has("releaseYear") ? 
                     gameObj.getString("releaseYear") : gameObj.getString("release_year");
 
             String playtime = gameObj.getString("playtime");
