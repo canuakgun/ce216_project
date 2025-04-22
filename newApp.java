@@ -1,5 +1,3 @@
-package com.example.gamecatalogproject;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -45,10 +43,31 @@ public class newApp extends Application {
         VBox centerPanel = createCenterPanel();
         root.setCenter(centerPanel);
 
+        // Bottom - Help Button
+        HBox bottomPanel = new HBox();
+        bottomPanel.setPadding(new Insets(10));
+        bottomPanel.setStyle("-fx-alignment: bottom-left;");
+
+        root.setBottom(bottomPanel);
+
         Scene scene = new Scene(root, 1000, 700);
         primaryStage.setTitle("Game Collection Catalog");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    private void showHelpDialog() {
+        Alert helpAlert = new Alert(Alert.AlertType.INFORMATION);
+        helpAlert.setTitle("Help");
+        helpAlert.setHeaderText("How to Use the Game Catalog");
+        helpAlert.setContentText(
+            "1. Use the filters on the left to narrow down the game list.\n" +
+            "2. Use the search bar to find games by title.\n" +
+            "3. Sort games by Title, Release Date, or Rating using the dropdown.\n" +
+            "4. Add new games using the 'Add Game' button.\n" +
+            "5. Delete selected games using the 'Delete Game' button."
+        );
+        helpAlert.showAndWait();
     }
 
     private VBox createLeftPanel() {
@@ -61,7 +80,7 @@ public class newApp extends Application {
         genresLabel.setStyle("-fx-font-weight: bold;");
         genresList.setItems(FXCollections.observableArrayList(
                 "Action", "Adventure", "RPG", "FPS", "Strategy",
-                "Sports", "Horror", "Simulation", "Puzzle", "Platformer","Open-World"
+                "Sports", "Horror", "Simulation", "Puzzle", "Platformer","Open-World","Racing"
         ));
         genresList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -129,12 +148,16 @@ public class newApp extends Application {
         Button deleteButton = new Button("Delete Game");
         deleteButton.setOnAction(e -> deleteSelectedGame());
 
+        // Move Help button here
+        buttonforhelp.setOnAction(e -> showHelpDialog());
+
         filterControls.getChildren().addAll(
                 new Label("Search:"), filterField,
                 new Label("Sort by:"), sortOptions,
                 new Label("Order:"), ascOrder, descOrder,
-                addButton, deleteButton
+                addButton, deleteButton, buttonforhelp // Add Help button here
         );
+
         // Games List
         setupGamesListView();
         centerPanel.getChildren().addAll(filterControls, gamesList);
