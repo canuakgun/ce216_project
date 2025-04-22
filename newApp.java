@@ -2,12 +2,8 @@ package com.example.gamecatalogproject;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
@@ -17,12 +13,14 @@ import java.util.Optional;
 
 public class newApp extends Application {
 
+    private Button buttonforhelp = new Button("Help");
     private Handler handler = new Handler();
     private ListView<Game> gamesList = new ListView<>();
     private TextField filterField = new TextField();
     private ComboBox<String> sortOptions = new ComboBox<>();
     private ListView<String> genresList = new ListView<>();
     private ListView<String> devList = new ListView<>();
+    private ToggleGroup orderGroup = new ToggleGroup();
 
     @Override
     public void start(Stage primaryStage) {
@@ -43,7 +41,7 @@ public class newApp extends Application {
         VBox leftPanel = createLeftPanel();
         root.setLeft(leftPanel);
 
-        // Center Panel - Games List
+        // Center Panel - Games List and Controls
         VBox centerPanel = createCenterPanel();
         root.setCenter(centerPanel);
 
@@ -62,33 +60,39 @@ public class newApp extends Application {
         Label genresLabel = new Label("GENRES");
         genresLabel.setStyle("-fx-font-weight: bold;");
         genresList.setItems(FXCollections.observableArrayList(
-                "ACTION", "ADVENTURE", "RPG", "FPS", "STRATEGY",
-                "SPORTS", "HORROR", "SIMULATION", "PUZZLE", "PLATFORMER"
+                "Action", "Adventure", "RPG", "FPS", "Strategy",
+                "Sports", "Horror", "Simulation", "Puzzle", "Platformer","Open-World"
         ));
         genresList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         HBox genreButtons = new HBox(5);
         Button filterGenre = new Button("Filter");
         filterGenre.setOnAction(e -> filterByGenre());
-        Button applyGenre = new Button("Reset");
-        applyGenre.setOnAction(e -> refreshGameList());
-        genreButtons.getChildren().addAll(filterGenre, applyGenre);
+        Button resetGenre = new Button("Reset");
+        resetGenre.setOnAction(e -> {
+            genresList.getSelectionModel().clearSelection();
+            refreshGameList();
+        });
+        genreButtons.getChildren().addAll(filterGenre, resetGenre);
 
         // Developers Filter
-        Label devLabel = new Label("DEVELOPERS");
+        Label devLabel = new Label("DEVELOPERS/PUBLISHERS");
         devLabel.setStyle("-fx-font-weight: bold;");
         devList.setItems(FXCollections.observableArrayList(
-                "Nintendo", "Rockstar", "CD Projekt Red", "FromSoftware",
+                "Nintendo", "Rockstar Games", "CD Projekt Red", "FromSoftware",
                 "Ubisoft", "Electronic Arts", "Valve", "Bethesda"
         ));
 
         HBox devButtons = new HBox(5);
         Button filterDev = new Button("Filter");
         filterDev.setOnAction(e -> filterByDeveloper());
-        Button applyDev = new Button("Reset");
-        applyDev.setOnAction(e -> refreshGameList());
+        Button resetDev = new Button("Reset");
+        resetDev.setOnAction(e -> {
+            devList.getSelectionModel().clearSelection();
+            refreshGameList();
+        });
+        devButtons.getChildren().addAll(filterDev, resetDev);
 
-        devButtons.getChildren().addAll(filterDev, applyDev);
         leftPanel.getChildren().addAll(
                 genresLabel, genresList, genreButtons,
                 new Label("\n"), devLabel, devList, devButtons
@@ -103,18 +107,21 @@ public class newApp extends Application {
 
         // Filter/Sort Controls
         HBox filterControls = new HBox(10);
+        filterControls.setPadding(new Insets(0, 0, 10, 0));
+
         filterField.setPromptText("Search games...");
         filterField.textProperty().addListener((obs, oldVal, newVal) -> searchGames());
 
         sortOptions.getItems().addAll("Title", "Release Date", "Rating");
         sortOptions.setValue("Title");
+        sortOptions.setOnAction(e -> sortGames());
 
-        ToggleGroup orderGroup = new ToggleGroup();
         RadioButton ascOrder = new RadioButton("Asc");
         RadioButton descOrder = new RadioButton("Desc");
         ascOrder.setToggleGroup(orderGroup);
         descOrder.setToggleGroup(orderGroup);
         ascOrder.setSelected(true);
+        orderGroup.selectedToggleProperty().addListener((obs, oldVal, newVal) -> sortGames());
 
         Button addButton = new Button("Add Game");
         addButton.setOnAction(e -> showAddGameDialog());
@@ -125,9 +132,9 @@ public class newApp extends Application {
         filterControls.getChildren().addAll(
                 new Label("Search:"), filterField,
                 new Label("Sort by:"), sortOptions,
-                ascOrder, descOrder, addButton, deleteButton
+                new Label("Order:"), ascOrder, descOrder,
+                addButton, deleteButton
         );
-
         // Games List
         setupGamesListView();
         centerPanel.getChildren().addAll(filterControls, gamesList);
@@ -149,8 +156,9 @@ public class newApp extends Application {
                     // Game Title and Rating
                     HBox titleBox = new HBox(5);
                     Label titleLabel = new Label(game.getGameTitle());
-                    titleLabel.setStyle("-fx-font-weight: bold;");
+                    titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
                     Label ratingLabel = new Label("★★★★★ " + calculateGameRating(game));
+                    ratingLabel.setStyle("-fx-text-fill: #ffcc00;");
                     titleBox.getChildren().addAll(titleLabel, ratingLabel);
 
                     // Game Details
@@ -166,6 +174,7 @@ public class newApp extends Application {
                     Label platformsLabel = new Label("Platforms: " + String.join(", ", game.getGamePlatforms()));
 
                     container.getChildren().addAll(titleBox, detailsLabel, genresLabel, platformsLabel);
+                    container.setStyle("-fx-padding: 5; -fx-border-color: #ddd; -fx-border-width: 0 0 1 0;");
                     setGraphic(container);
                 }
             }
@@ -174,33 +183,48 @@ public class newApp extends Application {
     }
 
     private void initializeSampleData() {
-        // Sample data initialization
-        Game game1 = new Game(
-                "The Legend of Zelda: Breath of the Wild",
-                "Nintendo",
-                "Nintendo",
-                List.of("ACTION", "ADVENTURE", "RPG"),
-                List.of("Nintendo Switch", "Wii U"),
-                "12345",
-                "2017",
-                "100+",
-                List.of("Open World", "Single Player")
-        );
+        JSONParser jsonParser = new JSONParser();
+        // Remove this line: Handler handler = new Handler();  // <-- This is the problem
 
-        Game game2 = new Game(
-                "Elden Ring",
-                "FromSoftware",
-                "Bandai Namco",
-                List.of("ACTION", "RPG"),
-                List.of("PC", "PS4", "PS5", "Xbox One", "Xbox Series X"),
-                "67890",
-                "2022",
-                "80+",
-                List.of("Open World", "Souls-like", "Multiplayer")
-        );
+        List<Game> parsedGames = jsonParser.readFromJsonFile("List.json");
 
-        handler.addGame(game1);
-        handler.addGame(game2);
+        if (parsedGames == null || parsedGames.isEmpty()) {
+            System.out.println("No games were loaded from the JSON file.");
+            return;
+        }
+
+        // Use the class-level handler instead of creating a new one
+        handler.addGamesFromList(parsedGames);
+
+        // Print all games to verify loading
+        System.out.println("Successfully loaded " + handler.getCollectionSize() + " games:");
+        handler.printAllGames();
+        updateFilterLists();
+        
+        refreshGameList();
+    }
+
+    private void updateFilterLists() {
+        // Update genres list
+        ObservableList<String> allGenres = FXCollections.observableArrayList();
+        for (Game game : handler.getAllGames()) {
+            for (String genre : game.getGameGenre()) {
+                if (!allGenres.contains(genre.toUpperCase())) {
+                    allGenres.add(genre.toUpperCase());
+                }
+            }
+        }
+        genresList.setItems(allGenres);
+
+        // Update developers list
+        ObservableList<String> allDevs = FXCollections.observableArrayList();
+        for (Game game : handler.getAllGames()) {
+            String dev = game.getGameDeveloper();
+            if (!allDevs.contains(dev)) {
+                allDevs.add(dev);
+            }
+        }
+        devList.setItems(allDevs);
     }
 
     private void refreshGameList() {
@@ -208,12 +232,19 @@ public class newApp extends Application {
     }
 
     private void searchGames() {
-        String query = filterField.getText();
-        if (query == null || query.isEmpty()) {
+        String query = filterField.getText().toLowerCase();
+        if (query.isEmpty()) {
             refreshGameList();
             return;
         }
-        gamesList.getItems().setAll(handler.searchGames(query));
+
+        ObservableList<Game> filteredGames = FXCollections.observableArrayList();
+        for (Game game : handler.getAllGames()) {
+            if (game.getGameTitle().toLowerCase().contains(query)) {
+                filteredGames.add(game);
+            }
+        }
+        gamesList.setItems(filteredGames);
     }
 
     private void filterByGenre() {
@@ -228,6 +259,29 @@ public class newApp extends Application {
         if (selectedDev != null) {
             gamesList.getItems().setAll(handler.filterByDeveloper(selectedDev));
         }
+    }
+
+    private void sortGames() {
+        String sortBy = sortOptions.getValue();
+        boolean isAscending = ((RadioButton) orderGroup.getSelectedToggle()).getText().equals("Asc");
+
+        ObservableList<Game> games = gamesList.getItems();
+
+        if ("Title".equals(sortBy)) {
+            games.sort((g1, g2) -> isAscending
+                    ? g1.getGameTitle().compareToIgnoreCase(g2.getGameTitle())
+                    : g2.getGameTitle().compareToIgnoreCase(g1.getGameTitle()));
+        } else if ("Release Date".equals(sortBy)) {
+            games.sort((g1, g2) -> isAscending
+                    ? g1.getGameReleaseYear().compareTo(g2.getGameReleaseYear())
+                    : g2.getGameReleaseYear().compareTo(g1.getGameReleaseYear()));
+        } else if ("Rating".equals(sortBy)) {
+            games.sort((g1, g2) -> isAscending
+                    ? Double.compare(Double.parseDouble(calculateGameRating(g1)), Double.parseDouble(calculateGameRating(g2)))
+                    : Double.compare(Double.parseDouble(calculateGameRating(g2)), Double.parseDouble(calculateGameRating(g1))));
+        }
+
+        gamesList.setItems(games);
     }
 
     private void deleteSelectedGame() {
@@ -258,7 +312,6 @@ public class newApp extends Application {
         dialog.setTitle("Add New Game");
         dialog.setHeaderText("Enter game details:");
 
-        // Set up form fields
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
@@ -268,14 +321,14 @@ public class newApp extends Application {
         TextField developerField = new TextField();
         TextField publisherField = new TextField();
         TextField genreField = new TextField();
-        genreField.setPromptText("Comma separated");
+        genreField.setPromptText("Comma separated (Action,Adventure)");
         TextField platformField = new TextField();
-        platformField.setPromptText("Comma separated");
+        platformField.setPromptText("Comma separated (PC,PS5)");
         TextField steamIdField = new TextField();
         TextField releaseYearField = new TextField();
         TextField playtimeField = new TextField();
         TextField tagsField = new TextField();
-        tagsField.setPromptText("Comma separated");
+        tagsField.setPromptText("Comma separated (Open-World,Multiplayer)");
 
         grid.add(new Label("Title:"), 0, 0);
         grid.add(titleField, 1, 0);
@@ -330,7 +383,7 @@ public class newApp extends Application {
         // Placeholder - implement your actual rating logic
         if (game.getGameTitle().contains("Zelda")) return "9.5";
         if (game.getGameTitle().contains("Elden")) return "9.0";
-        return "8.5";
+        return "9.2";
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {
@@ -343,5 +396,6 @@ public class newApp extends Application {
 
     public static void main(String[] args) {
         launch(args);
+
     }
 }
