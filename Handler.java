@@ -1,3 +1,5 @@
+package com.example.gamecatalogproject;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -5,13 +7,19 @@ import java.util.stream.Collectors;
 public class Handler {
     private GamesCollection collection;
     private JSONParser jsonParser;
-    private String jsonFilePath = "List.json"; 
+    private String jsonFilePath;
 
     public Handler() {
         this.collection = new GamesCollection();
         this.jsonParser = new JSONParser();
-    }
+        this.jsonFilePath = "List.json"; // Will be in the working directory
 
+        // Try to load from JAR resources first
+        List<Game> games = jsonParser.readFromJsonFile(jsonFilePath);
+        if (games != null && !games.isEmpty()) {
+            collection.addAll(games);
+        }
+    }
     // Initialization methods
     public void loadGamesFromJson(String filePath) {
         List<Game> games = jsonParser.readFromJsonFile(filePath);
