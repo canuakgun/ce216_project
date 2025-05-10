@@ -1,3 +1,4 @@
+package com.example.gamecatalogproject;
 import java.util.List;
 
 public class Game {
@@ -10,6 +11,7 @@ public class Game {
     private String gameReleaseYear;
     private String gamePlaytime;
     private List<String> gameTags;
+    private String gameRating;
     // for the genres,tags and platforms we can have multiple so we decided to use a ["x","y"] bracket for the multiple variable attributes so that in the parsing part we can easily apart them from others;
 
 
@@ -17,7 +19,7 @@ public class Game {
 
     public Game(String gameTitle, String gameDeveloper, String gamePublisher,   List<String>  gameGenre,
                 List<String> gamePlatforms, String gameSteamID, String gameReleaseYear, String gamePlaytime,
-                List<String> gameTags) {
+                List<String> gameTags,String gameRating) {
         this.gameTitle = gameTitle;
         this.gameDeveloper = gameDeveloper;
         this.gamePublisher = gamePublisher;
@@ -27,6 +29,8 @@ public class Game {
         this.gameReleaseYear = gameReleaseYear;
         this.gamePlaytime = gamePlaytime;
         this.gameTags = gameTags;
+        this.gameRating = gameRating; // Initialize gameRating
+
     }
 
     public void printGameTitle() {
@@ -57,6 +61,15 @@ public class Game {
         this.gamePublisher = gamePublisher;
     }
 
+    // Getter for gameRating
+    public String getGameRating() {
+        return gameRating;
+    }
+
+    // Setter for gameRating
+    public void setGameRating(String gameRating) {
+        this.gameRating = gameRating;
+    }
     public   List<String>  getGameGenre() {
         return gameGenre;
     }
@@ -113,6 +126,9 @@ public class Game {
         Game game = (Game) obj;
         return gameTitle != null && gameTitle.equals(game.gameTitle);
     }
-} 
-    
+
+    public String getPublisher() {
+        return gamePublisher;
+    }
+}
 
