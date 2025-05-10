@@ -1,3 +1,5 @@
+package com.example.gamecatalogproject;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -61,11 +63,11 @@ public class newApp extends Application {
         helpAlert.setTitle("Help");
         helpAlert.setHeaderText("How to Use the Game Catalog");
         helpAlert.setContentText(
-            "1. Use the filters on the left to narrow down the game list.\n" +
-            "2. Use the search bar to find games by title.\n" +
-            "3. Sort games by Title, Release Date, or Rating using the dropdown.\n" +
-            "4. Add new games using the 'Add Game' button.\n" +
-            "5. Delete selected games using the 'Delete Game' button."
+                "1. Use the filters on the left to narrow down the game list.\n" +
+                        "2. Use the search bar to find games by title.\n" +
+                        "3. Sort games by Title, Release Date, or Rating using the dropdown.\n" +
+                        "4. Add new games using the 'Add Game' button.\n" +
+                        "5. Delete selected games using the 'Delete Game' button."
         );
         helpAlert.showAndWait();
     }
@@ -210,27 +212,13 @@ public class newApp extends Application {
     }
 
     private void initializeSampleData() {
-        JSONParser jsonParser = new JSONParser();
-        // Remove this line: Handler handler = new Handler();  // <-- This is the problem
-
-        List<Game> parsedGames = jsonParser.readFromJsonFile("List.json");
-
-        if (parsedGames == null || parsedGames.isEmpty()) {
-            System.out.println("No games were loaded from the JSON file.");
-            return;
-        }
-
-        // Use the class-level handler instead of creating a new one
-        handler.addGamesFromList(parsedGames);
-
+        // The handler will now automatically load the data
         // Print all games to verify loading
         System.out.println("Successfully loaded " + handler.getCollectionSize() + " games:");
         handler.printAllGames();
         updateFilterLists();
-        
         refreshGameList();
     }
-
     private void updateFilterLists() {
         // Update genres list
         ObservableList<String> allGenres = FXCollections.observableArrayList();
