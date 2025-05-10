@@ -67,10 +67,11 @@ public class JSONParser {
                 gameObj.put("releaseYear", game.getGameReleaseYear());
                 gameObj.put("playtime", game.getGamePlaytime());
                 gameObj.put("tags", new JSONArray(game.getGameTags()));
+                gameObj.put("rating", game.getGameRating()); // Ensure rating is saved
                 jsonArray.put(gameObj);
             }
 
-            // Always save to external file (not inside JAR)
+            // Save to external file
             Files.write(Paths.get(fileName),
                     jsonArray.toString(2).getBytes(StandardCharsets.UTF_8),
                     StandardOpenOption.CREATE,
@@ -78,7 +79,6 @@ public class JSONParser {
             return true;
         } catch (Exception e) {
             System.err.println("Error saving to JSON file: " + e.toString());
-            e.printStackTrace();
             return false;
         }
     }
@@ -93,7 +93,7 @@ public class JSONParser {
         }
     }
 
-    private Game parseGameObject(JSONObject gameObj) {
+    public Game parseGameObject(JSONObject gameObj) {
         try {
             String title = gameObj.getString("title");
             String developer = gameObj.getString("developer");
@@ -116,9 +116,11 @@ public class JSONParser {
 
             JSONArray tagsArray = gameObj.getJSONArray("tags");
             List<String> tags = jsonArrayToList(tagsArray);
+            String rating = gameObj.has("rating") ? gameObj.getString("rating") : "0.0"; // Added rating field
+
 
             return new Game(title, developer, publisher, genres, platforms,
-                    steamID, releaseYear, playtime, tags);
+                    steamID, releaseYear, playtime, tags,rating);
         } catch (Exception e) {
             System.out.println("Error parsing game object: " + e.toString());
             return null;
