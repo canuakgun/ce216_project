@@ -20,6 +20,7 @@ public class newApp extends Application {
     private ComboBox<String> sortOptions = new ComboBox<>();
     private ListView<String> genresList = new ListView<>();
     private ListView<String> devList = new ListView<>();
+    private ListView<String> tagsList = new ListView<>();
     private ToggleGroup orderGroup = new ToggleGroup();
     private FileChooser fileChooser = new FileChooser();
 
@@ -31,7 +32,7 @@ public class newApp extends Application {
         // Configure file chooser
         fileChooser.getExtensionFilters().addAll(
             new FileChooser.ExtensionFilter("JSON Files", "*.json"),
-            new FileChooser.ExtensionFilter("All Files", ".")
+            new FileChooser.ExtensionFilter("All Files", "*.*")
         );
     }
 
@@ -97,7 +98,7 @@ public class newApp extends Application {
         genresLabel.setStyle("-fx-font-weight: bold;");
         genresList.setItems(FXCollections.observableArrayList(
                 "Action", "Adventure", "RPG", "FPS", "Strategy",
-                "Sports", "Horror", "Simulation", "Puzzle", "Platformer","Open-World","Racing"
+                "Sports", "Horror", "Simulation", "Puzzle", "Platformer", "Open-World", "Racing"
         ));
         genresList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
@@ -129,9 +130,29 @@ public class newApp extends Application {
         });
         devButtons.getChildren().addAll(filterDev, resetDev);
 
+        // Tags Filter
+        Label tagsLabel = new Label("TAGS");
+        tagsLabel.setStyle("-fx-font-weight: bold;");
+        tagsList.setItems(FXCollections.observableArrayList(
+                "Multiplayer", "Open-World", "Turn-based", "Co-op", "Singleplayer",
+                "Sandbox", "Survival", "Story-rich", "Casual", "Competitive"
+        ));
+        tagsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        HBox tagButtons = new HBox(5);
+        Button filterTag = new Button("Filter");
+        filterTag.setOnAction(e -> filterByTags());
+        Button resetTag = new Button("Reset");
+        resetTag.setOnAction(e -> {
+            tagsList.getSelectionModel().clearSelection();
+            refreshGameList();
+        });
+        tagButtons.getChildren().addAll(filterTag, resetTag);
+
         leftPanel.getChildren().addAll(
                 genresLabel, genresList, genreButtons,
-                new Label("\n"), devLabel, devList, devButtons
+                new Label("\n"), devLabel, devList, devButtons,
+                new Label("\n"), tagsLabel, tagsList, tagButtons
         );
 
         return leftPanel;
@@ -255,6 +276,17 @@ public class newApp extends Application {
             }
         }
         devList.setItems(allDevs);
+
+        // Update tags list
+        ObservableList<String> allTags = FXCollections.observableArrayList();
+        for (Game game : handler.getAllGames()) {
+            for (String tag : game.getGameTags()) {
+                if (!allTags.contains(tag)) {
+                    allTags.add(tag);
+                }
+            }
+        }
+        tagsList.setItems(allTags);
     }
 
     private void refreshGameList() {
@@ -289,6 +321,25 @@ public class newApp extends Application {
         if (selectedDev != null) {
             gamesList.getItems().setAll(handler.filterByDeveloper(selectedDev));
         }
+    }
+
+    private void filterByTags() {
+        ObservableList<String> selectedTags = tagsList.getSelectionModel().getSelectedItems();
+        if (selectedTags.isEmpty()) {
+            refreshGameList();
+            return;
+        }
+
+        ObservableList<Game> filteredGames = FXCollections.observableArrayList();
+        for (Game game : handler.getAllGames()) {
+            for (String tag : selectedTags) {
+                if (game.getGameTags().contains(tag)) {
+                    filteredGames.add(game);
+                    break; // Avoid adding the same game multiple times
+                }
+            }
+        }
+        gamesList.setItems(filteredGames);
     }
 
     private void sortGames() {
