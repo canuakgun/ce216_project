@@ -1,5 +1,3 @@
-package com.example.gamecatalogproject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -158,5 +156,9 @@ public class Handler {
                                 game.getGameTags().stream().anyMatch(tag -> tag.toLowerCase().contains(lowerQuery))
                 )
                 .collect(Collectors.toList());
+    }
+
+    public JSONParser getJsonParser() {
+        return jsonParser;
     }
 }
