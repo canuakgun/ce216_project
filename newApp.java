@@ -1,38 +1,51 @@
+ package com.example.gamecatalogproject;
+
 import javafx.application.Application;
+import javafx.application.HostServices;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.effect.Glow;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.FileChooser;
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Optional;
 
 public class newApp extends Application {
 
-    private Button buttonforhelp = new Button("Help");
-    private Handler handler = new Handler();
-    private ListView<Game> gamesList = new ListView<>();
-    private TextField filterField = new TextField();
-    private ComboBox<String> sortOptions = new ComboBox<>();
-    private ListView<String> genresList = new ListView<>();
-    private ListView<String> devList = new ListView<>();
-    private ListView<String> tagsList = new ListView<>();
-    private ToggleGroup orderGroup = new ToggleGroup();
-    private FileChooser fileChooser = new FileChooser();
+    private final Button buttonforhelp = new Button("Help");
+    private final Handler handler = new Handler();
+    private final ListView<Game> gamesList = new ListView<>();
+    private final TextField filterField = new TextField();
+    private final ComboBox<String> sortOptions = new ComboBox<>();
+    private final ListView<String> genresList = new ListView<>();
+    private final ListView<String> devList = new ListView<>();
+    private final ListView<String> tagsList = new ListView<>();
+
+    private final ListView<String> yearList = new ListView<>();
+    private final ListView<String> platformList = new ListView<>();
+
+    private final ListView<String> publisherList = new ListView<>();
+    private final ToggleGroup orderGroup = new ToggleGroup();
+    private final FileChooser fileChooser = new FileChooser();
 
     @Override
     public void start(Stage primaryStage) {
         initializeSampleData();
         setupUI(primaryStage);
-        
+
         // Configure file chooser
         fileChooser.getExtensionFilters().addAll(
-            new FileChooser.ExtensionFilter("JSON Files", "*.json"),
-            new FileChooser.ExtensionFilter("All Files", "*.*")
+                new FileChooser.ExtensionFilter("JSON Files", "*.json"),
+                new FileChooser.ExtensionFilter("All Files", ".")
         );
     }
 
@@ -41,13 +54,25 @@ public class newApp extends Application {
         root.setPadding(new Insets(10));
 
         // Top - Title
-        Label title = new Label("GAME CATALOG");
-        title.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
+        Label title = new Label("                                                      GAME CATALOG");
+        title.setAlignment(Pos.TOP_CENTER);
+        title.setStyle("-fx-font-size: 28px; " +
+                "-fx-font-weight: bold; " +
+                "-fx-text-fill: #2c3e50; " +
+                "-fx-font-family: 'Segoe UI', sans-serif; " +
+                "-fx-padding: 15px;");
         root.setTop(title);
 
         // Left Panel - Filters
         VBox leftPanel = createLeftPanel();
-        root.setLeft(leftPanel);
+        leftPanel.setStyle(
+                "-fx-background-color: #f0f0f0; " +          // Light background color
+                        "-fx-border-color: #cccccc; " +               // Light gray border
+                        "-fx-border-width: 1; " +                      // Thin border width
+                        "-fx-border-radius: 15; " +                    // Rounded corners
+                        "-fx-padding: 20; " +                           // Padding inside the left panel
+                        "-fx-spacing: 35;"                             // Space between child elements
+        );        root.setLeft(leftPanel);
 
         // Center Panel - Games List and Controls
         VBox centerPanel = createCenterPanel();
@@ -57,14 +82,14 @@ public class newApp extends Application {
         HBox bottomPanel = new HBox(10);
         bottomPanel.setPadding(new Insets(10));
         bottomPanel.setStyle("-fx-alignment: bottom-left;");
-        
+
         // Add Import and Export buttons to bottom panel
         Button importButton = new Button("Import JSON");
         importButton.setOnAction(e -> importGames(primaryStage));
-        
+
         Button exportButton = new Button("Export Selected");
         exportButton.setOnAction(e -> exportSelectedGames(primaryStage));
-        
+
         bottomPanel.getChildren().addAll(importButton, exportButton, buttonforhelp);
         root.setBottom(bottomPanel);
 
@@ -73,7 +98,112 @@ public class newApp extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+    private void showGameDetails(Game game) {
+        Stage detailsStage = new Stage();
+        detailsStage.setTitle(game.getGameTitle() + " - Details");
 
+        // Main container
+        VBox root = new VBox(15);
+        root.setPadding(new Insets(20));
+        root.setStyle("-fx-background-color: #f9f9f9;");
+
+        // Game Title
+        Label titleLabel = new Label(game.getGameTitle());
+        titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;");
+        titleLabel.setAlignment(Pos.TOP_CENTER);
+
+
+        // Rating
+        Label ratingLabel = new Label(getStarRating(game.getGameRating ()));
+        ratingLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #ffcc00;");
+        VBox ratingBox = createEnhancedRatingDisplay(game.getGameRating());
+        // Separator
+        Separator separator1 = new Separator();
+        separator1.setPadding(new Insets(5, 0, 5, 0));
+
+        // Basic Info Grid
+        GridPane infoGrid = new GridPane();
+        infoGrid.setHgap(15);
+        infoGrid.setVgap(8);
+        infoGrid.setPadding(new Insets(0, 0, 10, 0));
+
+        // Add basic info
+        addGridRow(infoGrid, 0, "Developer:", game.getGameDeveloper());
+        addGridRow(infoGrid, 1, "Publisher:", game.getGamePublisher());
+        addGridRow(infoGrid, 2, "Release Year:", game.getGameReleaseYear());
+        addGridRow(infoGrid, 3, "Playtime:", game.getGamePlaytime() + " hours");
+        addGridRow(infoGrid, 4, "Steam ID:", game.getGameSteamID());
+
+        // Separator
+        Separator separator2 = new Separator();
+        separator2.setPadding(new Insets(5, 0, 5, 0));
+
+        // Categories Section
+        HBox categoriesBox = new HBox(20);
+        categoriesBox.setPadding(new Insets(10, 0, 0, 0));
+
+        // Genres
+        VBox genresBox = createCategoryBox("Genres", game.getGameGenre());
+
+        // Platforms
+        VBox platformsBox = createCategoryBox("Platforms", game.getGamePlatforms());
+
+        // Tags
+        VBox tagsBox = createCategoryBox("Tags", game.getGameTags());
+
+        categoriesBox.getChildren().addAll(genresBox, platformsBox, tagsBox);
+
+        // Close Button
+        Button closeButton = new Button("Close");
+        closeButton.setStyle("-fx-background-color: #2c3e50; -fx-text-fill: white;");
+        closeButton.setOnAction(e -> detailsStage.close());
+
+        Hyperlink moreInfoLink = createGoogleSearchLink(game.getGameTitle());
+
+        // Add all components to root
+        root.getChildren().addAll(
+                titleLabel,
+                ratingBox,
+                separator1,
+                infoGrid,
+                separator2,
+                categoriesBox,
+                closeButton,
+                moreInfoLink
+        );
+
+        // Configure scene and stage
+        Scene scene = new Scene(root, 500, 580);
+        detailsStage.setScene(scene);
+        detailsStage.setResizable(false);
+        detailsStage.initModality(Modality.APPLICATION_MODAL);
+        detailsStage.show();
+    }
+
+    // Helper method to add rows to the info grid
+    private void addGridRow(GridPane grid, int row, String label, String value) {
+        Label infoLabel = new Label(label);
+        infoLabel.setStyle("-fx-font-weight: bold;");
+        grid.add(infoLabel, 0, row);
+
+        Label infoValue = new Label(value);
+        grid.add(infoValue, 1, row);
+    }
+
+    // Helper method to create category boxes
+    private VBox createCategoryBox(String title, List<String> items) {
+        VBox box = new VBox(5);
+        Label titleLabel = new Label(title + ":");
+        titleLabel.setStyle("-fx-font-weight: bold;");
+
+        ListView<String> listView = new ListView<>();
+        listView.setItems(FXCollections.observableArrayList(items));
+        listView.setPrefHeight(150);
+        listView.setStyle("-fx-background-color: transparent; -fx-border-color: #ddd;");
+
+        box.getChildren().addAll(titleLabel, listView);
+        return box;
+    }
     private void showHelpDialog() {
         Alert helpAlert = new Alert(Alert.AlertType.INFORMATION);
         helpAlert.setTitle("Help");
@@ -89,74 +219,124 @@ public class newApp extends Application {
     }
 
     private VBox createLeftPanel() {
-        VBox leftPanel = new VBox(10);
-        leftPanel.setPadding(new Insets(10));
-        leftPanel.setPrefWidth(200);
+        VBox leftPanel = new VBox(15);
+        leftPanel.setPadding(new Insets(15));
+        leftPanel.setPrefWidth(280);
 
-        // Genres Filter
-        Label genresLabel = new Label("GENRES");
-        genresLabel.setStyle("-fx-font-weight: bold;");
-        genresList.setItems(FXCollections.observableArrayList(
-                "Action", "Adventure", "RPG", "FPS", "Strategy",
-                "Sports", "Horror", "Simulation", "Puzzle", "Platformer", "Open-World", "Racing"
-        ));
-        genresList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        // --- Genres ---
+        TitledPane genresPane = createFilterPane(
+                "🎮 Genres",
+                FXCollections.observableArrayList(
+                        "Action", "Adventure", "RPG", "FPS", "Strategy", "Sports",
+                        "Horror", "Simulation", "Puzzle", "Platformer", "Open-World", "Racing"
+                ),
+                genresList,
+                this::filterByGenre
+        );
 
-        HBox genreButtons = new HBox(5);
-        Button filterGenre = new Button("Filter");
-        filterGenre.setOnAction(e -> filterByGenre());
-        Button resetGenre = new Button("Reset");
-        resetGenre.setOnAction(e -> {
-            genresList.getSelectionModel().clearSelection();
-            refreshGameList();
-        });
-        genreButtons.getChildren().addAll(filterGenre, resetGenre);
+        // --- Filter by Year ---
+        TitledPane yearPane = createFilterPane(
+                "📅 Year",
+                FXCollections.observableArrayList(
+                        "2025", "2024", "2023", "2022", "2021", "2020",
+                        "2019", "2018", "2017", "2016", "2015"
+                ),
+                yearList,
+                this::filterByYear
+        );
 
-        // Developers Filter
-        Label devLabel = new Label("DEVELOPERS/PUBLISHERS");
-        devLabel.setStyle("-fx-font-weight: bold;");
-        devList.setItems(FXCollections.observableArrayList(
-                "Nintendo", "Rockstar Games", "CD Projekt Red", "FromSoftware",
-                "Ubisoft", "Electronic Arts", "Valve", "Bethesda"
-        ));
 
-        HBox devButtons = new HBox(5);
-        Button filterDev = new Button("Filter");
-        filterDev.setOnAction(e -> filterByDeveloper());
-        Button resetDev = new Button("Reset");
-        resetDev.setOnAction(e -> {
-            devList.getSelectionModel().clearSelection();
-            refreshGameList();
-        });
-        devButtons.getChildren().addAll(filterDev, resetDev);
+        // --- Publishers ---
+        TitledPane pubPane = createFilterPane(
+                "🏢 Publishers",
+                FXCollections.observableArrayList(
+                        "Electronic Arts", "Activision", "Bandai Namco", "SEGA", "2K Games","CD Projekt","ConcernedApe","Bethesda","Bethesda Softworks"
+                ),
+                publisherList,
+                this::filterByPublisher
+        );
 
-        // Tags Filter
-        Label tagsLabel = new Label("TAGS");
-        tagsLabel.setStyle("-fx-font-weight: bold;");
-        tagsList.setItems(FXCollections.observableArrayList(
-                "Multiplayer", "Open-World", "Turn-based", "Co-op", "Singleplayer",
-                "Sandbox", "Survival", "Story-rich", "Casual", "Competitive"
-        ));
-        tagsList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        // --- Tags ---
+        TitledPane tagsPane = createFilterPane(
+                "\uD83D\uDC7E Tags",
+                FXCollections.observableArrayList(
+                        "Multiplayer", "Open-World", "Turn-based", "Co-op", "Singleplayer",
+                        "Sandbox", "Survival", "Story-rich", "Casual", "Competitive"
+                ),
+                tagsList,
+                this::filterByTags
+        );
+        // --- Developers ---
+        TitledPane devPane = createFilterPane(
+                "👨 Developers",
+                FXCollections.observableArrayList(
+                        "Nintendo", "Rockstar Games", "CD Projekt Red", "FromSoftware",
+                        "Ubisoft", "Valve", "id Software","Bethesda Game Studios","Capcom","Larian Studios","Supergiant Games"
+                ),
+                devList,
+                this::filterByDeveloper
+        );
 
-        HBox tagButtons = new HBox(5);
-        Button filterTag = new Button("Filter");
-        filterTag.setOnAction(e -> filterByTags());
-        Button resetTag = new Button("Reset");
-        resetTag.setOnAction(e -> {
-            tagsList.getSelectionModel().clearSelection();
-            refreshGameList();
-        });
-        tagButtons.getChildren().addAll(filterTag, resetTag);
+
+        // --- Platforms ---
+        TitledPane platformsPane = createFilterPane(
+                "🖥 Platforms",
+                FXCollections.observableArrayList("PC", "PlayStation", "Xbox", "Switch", "Mobile"),
+                platformList,
+                this::filterByPlatform
+        );
+
 
         leftPanel.getChildren().addAll(
-                genresLabel, genresList, genreButtons,
-                new Label("\n"), devLabel, devList, devButtons,
-                new Label("\n"), tagsLabel, tagsList, tagButtons
+                genresPane, devPane, pubPane, tagsPane,
+                platformsPane,yearPane
         );
 
         return leftPanel;
     }
+
+    private void filterByYear() {
+        String selectedYear = yearList.getSelectionModel().getSelectedItem();
+        if (selectedYear != null) {
+            gamesList.getItems().setAll(handler.filterByYear(selectedYear));
+        }
+    }
+
+    private void filterByPlatform() {
+        String selectedPlatform = platformList.getSelectionModel().getSelectedItem();
+        if (selectedPlatform != null) {
+            gamesList.getItems().setAll(handler.filterByPlatform(selectedPlatform));
+        }
+    }
+
+
+    private TitledPane createFilterPane(String title, ObservableList<String> items, ListView<String> listView, Runnable filterAction) {
+        listView.setItems(items);
+        listView.setPrefHeight(120);
+        listView.setStyle("-fx-background-color: #3c3f41; -fx-text-fill: white;");
+        listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        Button filterBtn = new Button("Filter");
+        filterBtn.setOnAction(e -> filterAction.run());
+
+        Button resetBtn = new Button("Reset");
+        resetBtn.setOnAction(e -> {
+            listView.getSelectionModel().clearSelection();
+            refreshGameList();
+        });
+
+        HBox buttons = new HBox(10, filterBtn, resetBtn);
+        buttons.setAlignment(Pos.CENTER_LEFT);
+
+        VBox content = new VBox(8, listView, buttons);
+        content.setPadding(new Insets(8));
+
+        TitledPane pane = new TitledPane(title, content);
+        pane.setExpanded(false);
+        pane.setAnimated(true);
+        return pane;
+    }
+
 
     private VBox createCenterPanel() {
         VBox centerPanel = new VBox(10);
@@ -207,6 +387,95 @@ public class newApp extends Application {
         return centerPanel;
     }
 
+    private VBox createEnhancedRatingDisplay(String ratingStr) {
+        VBox ratingBox = new VBox(5);
+        ratingBox.setAlignment(Pos.CENTER_LEFT);
+
+        try {
+            double rating = Double.parseDouble(ratingStr);
+            boolean isTenScale = rating > 5; // Assume ratings >5 are on 10-point scale
+
+            // Normalize to 5-point scale for display
+            double displayRating = isTenScale ? rating / 2 : rating;
+
+            // Create star container
+            HBox starsBox = new HBox(2);
+
+            // Determine star rating (using if-else instead of loops)
+            if (displayRating <= 5 && displayRating > 4) {
+                addStars(starsBox, 5, 0); // ★★★★★
+            } else if (displayRating <= 4 && displayRating > 3) {
+                addStars(starsBox, 4, 1); // ★★★★☆
+            } else if (displayRating <= 3 && displayRating > 2) {
+                addStars(starsBox, 3, 2); // ★★★☆☆
+            } else if (displayRating <= 2 && displayRating > 1) {
+                addStars(starsBox, 2, 3); // ★★☆☆☆
+            } else if (displayRating <= 1 && displayRating > 0) {
+                addStars(starsBox, 1, 4); // ★☆☆☆☆
+            } else {
+                addStars(starsBox, 0, 5); // ☆☆☆☆☆
+            }
+
+            // Add numeric rating
+            Label numericRating = new Label(String.format("%.1f/10", rating));
+            numericRating.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+
+            // Add rating source (optional)
+            Label sourceLabel = new Label("User Rating");
+            sourceLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666666;");
+
+            ratingBox.getChildren().addAll(starsBox, numericRating, sourceLabel);
+
+        } catch (NumberFormatException e) {
+            Label errorLabel = new Label("Rating not available");
+            errorLabel.setStyle("-fx-text-fill: #999999;");
+            ratingBox.getChildren().add(errorLabel);
+        }
+
+        return ratingBox;
+    }
+
+    // Helper method to add gold and gray stars
+    private void addStars(HBox starsBox, int fullStars, int emptyStars) {
+        // Add gold stars (★)
+        for (int i = 0; i < fullStars; i++) {
+            Label star = new Label("★");
+            star.setStyle("-fx-text-fill: #ffcc00; -fx-font-size: 24px;");
+            starsBox.getChildren().add(star);
+        }
+        // Add gray stars (☆)
+        for (int i = 0; i < emptyStars; i++) {
+            Label star = new Label("☆");
+            star.setStyle("-fx-text-fill: #cccccc; -fx-font-size: 24px;");
+            starsBox.getChildren().add(star);
+}
+    }
+
+    private String getStarRating(String ratingStr) {
+        try {
+            double rating = Double.parseDouble(ratingStr);
+            int fullStars = (int) rating;
+            boolean hasHalfStar = (rating - fullStars) >= 0.5;
+
+            StringBuilder stars = new StringBuilder();
+            if(rating <= 10 && rating > 8)
+                stars.append("★★★★★");
+            else if(rating <= 8 && rating > 6)
+                stars.append("★★★★☆");
+            else if(rating <= 6 && rating > 4)
+                stars.append("★★★☆☆");
+            else if(rating <= 4 && rating > 2)
+                stars.append("★★☆☆☆");
+            else if(rating <= 2 && rating > 0)
+                stars.append("★☆☆☆☆");
+            else
+                stars.append("☆☆☆☆☆");
+
+            return stars.toString();
+        } catch (NumberFormatException e) {
+            return "☆☆☆☆☆";
+        }
+    }
     private void setupGamesListView() {
         gamesList.setCellFactory(lv -> new ListCell<Game>() {
             @Override
@@ -222,7 +491,7 @@ public class newApp extends Application {
                     HBox titleBox = new HBox(5);
                     Label titleLabel = new Label(game.getGameTitle());
                     titleLabel.setStyle("-fx-font-weight: bold; -fx-font-size: 14px;");
-                    Label ratingLabel = new Label("★★★★★ " + calculateGameRating(game));
+                    Label ratingLabel = new Label(getStarRating(game.getGameRating()) + " " + game.getGameRating()+ "/10");
                     ratingLabel.setStyle("-fx-text-fill: #ffcc00;");
                     titleBox.getChildren().addAll(titleLabel, ratingLabel);
 
@@ -243,10 +512,38 @@ public class newApp extends Application {
                     setGraphic(container);
                 }
             }
+        });  gamesList.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {
+                Game selectedGame = gamesList.getSelectionModel().getSelectedItem();
+                if (selectedGame != null) {
+                    showGameDetails(selectedGame);
+                }
+            }
         });
+
         refreshGameList();
     }
 
+    private Hyperlink createGoogleSearchLink(String gameTitle) {
+        Hyperlink moreInfoLink = new Hyperlink("More Information on Google");
+        moreInfoLink.setStyle("-fx-text-fill: #0066cc; -fx-font-size: 14px;");
+
+        moreInfoLink.setOnAction(e -> {
+            try {
+                // Encode the game title for URL
+                String encodedQuery = URLEncoder.encode(gameTitle, "UTF-8");
+                String googleSearchUrl = "https://www.google.com/search?q=" + encodedQuery + "+game";
+
+                // Open the URL in the default browser
+                HostServices hostServices = getHostServices();
+                hostServices.showDocument(googleSearchUrl);
+            } catch (Exception ex) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Could not open browser: " + ex.getMessage());
+            }
+        });
+
+        return moreInfoLink;
+    }
     private void initializeSampleData() {
         // The handler will now automatically load the data
         // Print all games to verify loading
@@ -294,15 +591,16 @@ public class newApp extends Application {
     }
 
     private void searchGames() {
-        String query = filterField.getText().toLowerCase(); // Convert query to lowercase for case-insensitive search
+        String query = filterField.getText().toLowerCase();
         if (query.isEmpty()) {
-            refreshGameList(); // Refresh the list if the query is empty
+            refreshGameList();
             return;
         }
 
-        List<Game> results = handler.searchGames(query); // Use the handler to search for games
-        gamesList.setItems(FXCollections.observableArrayList(results)); // Update the ListView with the search results
+        List<Game> results = handler.searchGames(query);
+        gamesList.setItems(FXCollections.observableArrayList(results));
     }
+
 
     private void filterByGenre() {
         String selectedGenre = genresList.getSelectionModel().getSelectedItem();
@@ -317,6 +615,14 @@ public class newApp extends Application {
             gamesList.getItems().setAll(handler.filterByDeveloper(selectedDev));
         }
     }
+    private void filterByPublisher() {
+        String selectedPublisher = publisherList.getSelectionModel().getSelectedItem();
+        if (selectedPublisher != null) {
+            gamesList.getItems().setAll(handler.filterByPublisher(selectedPublisher));
+        }
+    }
+
+
 
     private void filterByTags() {
         ObservableList<String> selectedTags = tagsList.getSelectionModel().getSelectedItems();
@@ -405,6 +711,16 @@ public class newApp extends Application {
         TextField playtimeField = new TextField();
         TextField tagsField = new TextField();
         tagsField.setPromptText("Comma separated (Open-World,Multiplayer)");
+        TextField ratingField = new TextField();
+        ratingField.setPromptText("0.0 - 10.0");
+
+
+        ratingField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("\\d*(\\.\\d*)?")) {
+                ratingField.setText(oldVal);
+            }
+        });
+
 
         grid.add(new Label("Title:"), 0, 0);
         grid.add(titleField, 1, 0);
@@ -424,6 +740,8 @@ public class newApp extends Application {
         grid.add(playtimeField, 1, 7);
         grid.add(new Label("Tags:"), 0, 8);
         grid.add(tagsField, 1, 8);
+        grid.add(new Label("Rating:"), 0, 9);
+        grid.add(ratingField, 1, 9);
 
         dialog.getDialogPane().setContent(grid);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -439,7 +757,9 @@ public class newApp extends Application {
                         steamIdField.getText(),
                         releaseYearField.getText(),
                         playtimeField.getText(),
-                        List.of(tagsField.getText().split("\\s*,\\s*"))
+                        List.of(tagsField.getText().split("\\s*,\\s*")),
+                        ratingField.getText()
+
                 );
             }
             return null;
@@ -483,6 +803,16 @@ public class newApp extends Application {
         TextField playtimeField = new TextField(selectedGame.getGamePlaytime());
         TextField tagsField = new TextField(String.join(", ", selectedGame.getGameTags()));
         tagsField.setPromptText("Comma separated (Open-World,Multiplayer)");
+        TextField ratingField = new TextField();
+        ratingField.setPromptText("0.0 - 10.0");
+
+
+        ratingField.textProperty().addListener((obs, oldVal, newVal) -> {
+            if (!newVal.matches("\\d*(\\.\\d*)?")) {
+                ratingField.setText(oldVal);
+            }
+        });
+
 
         grid.add(new Label("Title:"), 0, 0);
         grid.add(titleField, 1, 0);
@@ -502,6 +832,8 @@ public class newApp extends Application {
         grid.add(playtimeField, 1, 7);
         grid.add(new Label("Tags:"), 0, 8);
         grid.add(tagsField, 1, 8);
+        grid.add(new Label("Rating:"), 0, 9);
+        grid.add(ratingField, 1, 9);
 
         dialog.getDialogPane().setContent(grid);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -517,7 +849,9 @@ public class newApp extends Application {
                         steamIdField.getText(),
                         releaseYearField.getText(),
                         playtimeField.getText(),
-                        List.of(tagsField.getText().split("\\s*,\\s*"))
+                        List.of(tagsField.getText().split("\\s*,\\s*")),
+                        ratingField.getText()
+
                 );
             }
             return null;
@@ -561,11 +895,11 @@ public class newApp extends Application {
                 List<Game> importedGames = handler.getJsonParser().readFromJsonFile(file.getAbsolutePath());
                 int addedCount = handler.addGamesFromList(importedGames);
                 refreshGameList();
-                showAlert(Alert.AlertType.INFORMATION, "Import Successful", 
-                    "Successfully imported " + addedCount + " games from " + file.getName());
+                showAlert(Alert.AlertType.INFORMATION, "Import Successful",
+                        "Successfully imported " + addedCount + " games from " + file.getName());
             } catch (Exception e) {
-                showAlert(Alert.AlertType.ERROR, "Import Error", 
-                    "Failed to import games: " + e.getMessage());
+                showAlert(Alert.AlertType.ERROR, "Import Error",
+                        "Failed to import games: " + e.getMessage());
             }
         }
     }
@@ -581,26 +915,25 @@ public class newApp extends Application {
         if (file != null) {
             try {
                 boolean success = handler.getJsonParser().saveToJsonFile(
-                    file.getAbsolutePath(), 
-                    List.of(selectedGame)
+                        file.getAbsolutePath(),
+                        List.of(selectedGame)
                 );
-                
+
                 if (success) {
-                    showAlert(Alert.AlertType.INFORMATION, "Export Successful", 
-                        "Game exported successfully to " + file.getName());
+                    showAlert(Alert.AlertType.INFORMATION, "Export Successful",
+                            "Game exported successfully to " + file.getName());
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Export Error", 
-                        "Failed to export game");
+                    showAlert(Alert.AlertType.ERROR, "Export Error",
+                            "Failed to export game");
                 }
             } catch (Exception e) {
-                showAlert(Alert.AlertType.ERROR, "Export Error", 
-                    "Failed to export game: " + e.getMessage());
+                showAlert(Alert.AlertType.ERROR, "Export Error",
+                        "Failed to export game: " + e.getMessage());
             }
         }
     }
 
     public static void main(String[] args) {
         launch(args);
-
     }
 }
