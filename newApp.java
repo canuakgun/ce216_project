@@ -1,5 +1,3 @@
-package com.example.gamecatalogproject;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -8,6 +6,8 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.stage.FileChooser;
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,11 +21,18 @@ public class newApp extends Application {
     private ListView<String> genresList = new ListView<>();
     private ListView<String> devList = new ListView<>();
     private ToggleGroup orderGroup = new ToggleGroup();
+    private FileChooser fileChooser = new FileChooser();
 
     @Override
     public void start(Stage primaryStage) {
         initializeSampleData();
         setupUI(primaryStage);
+        
+        // Configure file chooser
+        fileChooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("JSON Files", "*.json"),
+            new FileChooser.ExtensionFilter("All Files", ".")
+        );
     }
 
     private void setupUI(Stage primaryStage) {
@@ -46,10 +53,18 @@ public class newApp extends Application {
         root.setCenter(centerPanel);
 
         // Bottom - Help Button
-        HBox bottomPanel = new HBox();
+        HBox bottomPanel = new HBox(10);
         bottomPanel.setPadding(new Insets(10));
         bottomPanel.setStyle("-fx-alignment: bottom-left;");
-
+        
+        // Add Import and Export buttons to bottom panel
+        Button importButton = new Button("Import JSON");
+        importButton.setOnAction(e -> importGames(primaryStage));
+        
+        Button exportButton = new Button("Export Selected");
+        exportButton.setOnAction(e -> exportSelectedGames(primaryStage));
+        
+        bottomPanel.getChildren().addAll(importButton, exportButton, buttonforhelp);
         root.setBottom(bottomPanel);
 
         Scene scene = new Scene(root, 1000, 700);
@@ -491,6 +506,51 @@ public class newApp extends Application {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private void importGames(Stage primaryStage) {
+        File file = fileChooser.showOpenDialog(primaryStage);
+        if (file != null) {
+            try {
+                List<Game> importedGames = handler.getJsonParser().readFromJsonFile(file.getAbsolutePath());
+                int addedCount = handler.addGamesFromList(importedGames);
+                refreshGameList();
+                showAlert(Alert.AlertType.INFORMATION, "Import Successful", 
+                    "Successfully imported " + addedCount + " games from " + file.getName());
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, "Import Error", 
+                    "Failed to import games: " + e.getMessage());
+            }
+        }
+    }
+
+    private void exportSelectedGames(Stage primaryStage) {
+        Game selectedGame = gamesList.getSelectionModel().getSelectedItem();
+        if (selectedGame == null) {
+            showAlert(Alert.AlertType.WARNING, "No Selection", "Please select a game to export");
+            return;
+        }
+
+        File file = fileChooser.showSaveDialog(primaryStage);
+        if (file != null) {
+            try {
+                boolean success = handler.getJsonParser().saveToJsonFile(
+                    file.getAbsolutePath(), 
+                    List.of(selectedGame)
+                );
+                
+                if (success) {
+                    showAlert(Alert.AlertType.INFORMATION, "Export Successful", 
+                        "Game exported successfully to " + file.getName());
+                } else {
+                    showAlert(Alert.AlertType.ERROR, "Export Error", 
+                        "Failed to export game");
+                }
+            } catch (Exception e) {
+                showAlert(Alert.AlertType.ERROR, "Export Error", 
+                    "Failed to export game: " + e.getMessage());
+            }
+        }
     }
 
     public static void main(String[] args) {
