@@ -148,6 +148,10 @@ public class newApp extends Application {
         Button deleteButton = new Button("Delete Game");
         deleteButton.setOnAction(e -> deleteSelectedGame());
 
+        // Add Edit Game button
+        Button editButton = new Button("Edit Game");
+        editButton.setOnAction(e -> showEditGameDialog());
+
         // Move Help button here
         buttonforhelp.setOnAction(e -> showHelpDialog());
 
@@ -155,7 +159,7 @@ public class newApp extends Application {
                 new Label("Search:"), filterField,
                 new Label("Sort by:"), sortOptions,
                 new Label("Order:"), ascOrder, descOrder,
-                addButton, deleteButton, buttonforhelp // Add Help button here
+                addButton, deleteButton, editButton, buttonforhelp // Add Edit button here
         );
 
         // Games List
@@ -398,6 +402,90 @@ public class newApp extends Application {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Game added successfully!");
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", "Failed to add game (possibly duplicate title)");
+            }
+        });
+    }
+
+    private void showEditGameDialog() {
+        Game selectedGame = gamesList.getSelectionModel().getSelectedItem();
+        if (selectedGame == null) {
+            showAlert(Alert.AlertType.WARNING, "No Selection", "Please select a game to edit");
+            return;
+        }
+
+        Dialog<Game> dialog = new Dialog<>();
+        dialog.setTitle("Edit Game");
+        dialog.setHeaderText("Edit game details:");
+
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField titleField = new TextField(selectedGame.getGameTitle());
+        TextField developerField = new TextField(selectedGame.getGameDeveloper());
+        TextField publisherField = new TextField(selectedGame.getGamePublisher());
+        TextField genreField = new TextField(String.join(", ", selectedGame.getGameGenre()));
+        genreField.setPromptText("Comma separated (Action,Adventure)");
+        TextField platformField = new TextField(String.join(", ", selectedGame.getGamePlatforms()));
+        platformField.setPromptText("Comma separated (PC,PS5)");
+        TextField steamIdField = new TextField(selectedGame.getGameSteamID());
+        TextField releaseYearField = new TextField(selectedGame.getGameReleaseYear());
+        TextField playtimeField = new TextField(selectedGame.getGamePlaytime());
+        TextField tagsField = new TextField(String.join(", ", selectedGame.getGameTags()));
+        tagsField.setPromptText("Comma separated (Open-World,Multiplayer)");
+
+        grid.add(new Label("Title:"), 0, 0);
+        grid.add(titleField, 1, 0);
+        grid.add(new Label("Developer:"), 0, 1);
+        grid.add(developerField, 1, 1);
+        grid.add(new Label("Publisher:"), 0, 2);
+        grid.add(publisherField, 1, 2);
+        grid.add(new Label("Genres:"), 0, 3);
+        grid.add(genreField, 1, 3);
+        grid.add(new Label("Platforms:"), 0, 4);
+        grid.add(platformField, 1, 4);
+        grid.add(new Label("Steam ID:"), 0, 5);
+        grid.add(steamIdField, 1, 5);
+        grid.add(new Label("Release Year:"), 0, 6);
+        grid.add(releaseYearField, 1, 6);
+        grid.add(new Label("Playtime:"), 0, 7);
+        grid.add(playtimeField, 1, 7);
+        grid.add(new Label("Tags:"), 0, 8);
+        grid.add(tagsField, 1, 8);
+
+        dialog.getDialogPane().setContent(grid);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        dialog.setResultConverter(buttonType -> {
+            if (buttonType == ButtonType.OK) {
+                return new Game(
+                        titleField.getText(),
+                        developerField.getText(),
+                        publisherField.getText(),
+                        List.of(genreField.getText().split("\\s*,\\s*")),
+                        List.of(platformField.getText().split("\\s*,\\s*")),
+                        steamIdField.getText(),
+                        releaseYearField.getText(),
+                        playtimeField.getText(),
+                        List.of(tagsField.getText().split("\\s*,\\s*"))
+                );
+            }
+            return null;
+        });
+
+        Optional<Game> result = dialog.showAndWait();
+        result.ifPresent(editedGame -> {
+            // First remove the old game
+            handler.removeGame(selectedGame.getGameTitle());
+            // Then add the edited game
+            if (handler.addGame(editedGame)) {
+                refreshGameList();
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Game edited successfully!");
+            } else {
+                // If adding fails, add back the original game
+                handler.addGame(selectedGame);
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to edit game");
             }
         });
     }
