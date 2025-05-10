@@ -152,7 +152,11 @@ public class Handler {
                         game.getGameTitle().toLowerCase().contains(lowerQuery) ||
                                 game.getGameDeveloper().toLowerCase().contains(lowerQuery) ||
                                 game.getGamePublisher().toLowerCase().contains(lowerQuery) ||
+                                String.valueOf(game.getGameReleaseYear()).toLowerCase().contains(lowerQuery) || // Convert release year to string
+                                String.valueOf(game.getGamePlaytime()).toLowerCase().contains(lowerQuery) || // Convert playtime to string
+                                String.valueOf(game.getGameSteamID()).toLowerCase().contains(lowerQuery) || // Convert Steam ID to string
                                 game.getGameGenre().stream().anyMatch(genre -> genre.toLowerCase().contains(lowerQuery)) ||
+                                game.getGamePlatforms().stream().anyMatch(platform -> platform.toLowerCase().contains(lowerQuery)) ||
                                 game.getGameTags().stream().anyMatch(tag -> tag.toLowerCase().contains(lowerQuery))
                 )
                 .collect(Collectors.toList());
