@@ -1,112 +1,291 @@
 [
   {
-    "title": "The Witcher 3: Wild Hunt",
-    "developer": "CD Projekt Red",
-    "publisher": "CD Projekt",
-    "genre": ["RPG", "Open-World"],
-    "platforms": ["PC", "PlayStation", "Xbox"],
-    "steamid": "292030",
-    "release_year": "2015",
-    "playtime": "150",
-    "tags": ["Story-rich", "Fantasy"]
-  },
-  {
-    "title": "Red Dead Redemption 2",
-    "developer": "Rockstar Games",
-    "publisher": "Rockstar Games",
-    "genre": ["Action", "Open-World"],
-    "platforms": ["PC", "PlayStation", "Xbox"],
-    "steamid": "1174180",
-    "release_year": "2018",
-    "playtime": "120",
-    "tags": ["Story-rich", "Western"]
-  },
-  {
-    "title": "Hades",
-    "developer": "Supergiant Games",
+    "steamID": "1145360",
+    "genres": [
+      "Roguelike",
+      "Action"
+    ],
+    "rating": "9.3",
     "publisher": "Supergiant Games",
-    "genre": ["Roguelike", "Action"],
-    "platforms": ["PC", "Switch", "PlayStation", "Xbox"],
-    "steamid": "1145360",
-    "release_year": "2020",
+    "developer": "Supergiant Games",
     "playtime": "60",
-    "tags": ["Mythology", "Indie"]
+    "title": "Hades",
+    "releaseYear": "2020",
+    "platforms": [
+      "PC",
+      "Switch",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Mythology",
+      "Indie"
+    ]
   },
   {
-    "title": "Elden Ring",
-    "developer": "FromSoftware",
+    "steamID": "1245620",
+    "genres": [
+      "RPG",
+      "Action",
+      "Open-World"
+    ],
+    "rating": "9.7",
     "publisher": "Bandai Namco",
-    "genre": ["RPG", "Action", "Open-World"],
-    "platforms": ["PC", "PlayStation", "Xbox"],
-    "steamid": "1245620",
-    "release_year": "2022",
+    "developer": "FromSoftware",
     "playtime": "100",
-    "tags": ["Souls-like", "Exploration"]
+    "title": "Elden Ring",
+    "releaseYear": "2022",
+    "platforms": [
+      "PC",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Souls-like",
+      "Exploration"
+    ]
   },
   {
-    "title": "Hollow Knight",
-    "developer": "Team Cherry",
+    "steamID": "367520",
+    "genres": [
+      "Metroidvania",
+      "Action",
+      "Platformer"
+    ],
+    "rating": "9.4",
     "publisher": "Team Cherry",
-    "genre": ["Metroidvania", "Action", "Platformer"],
-    "platforms": ["PC", "Switch", "PlayStation", "Xbox"],
-    "steamid": "367520",
-    "release_year": "2017",
+    "developer": "Team Cherry",
     "playtime": "40",
-    "tags": ["Indie", "Difficult"]
+    "title": "Hollow Knight",
+    "releaseYear": "2017",
+    "platforms": [
+      "PC",
+      "Switch",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Indie",
+      "Difficult"
+    ]
   },
   {
-    "title": "Portal 2",
-    "developer": "Valve",
-    "publisher": "Valve",
-    "genre": ["Puzzle", "First-Person"],
-    "platforms": ["PC", "PlayStation", "Xbox"],
-    "steamid": "620",
-    "release_year": "2011",
-    "playtime": "15",
-    "tags": ["Co-op", "Humor"]
-  },
-  {
-    "title": "Cyberpunk 2077",
-    "developer": "CD Projekt Red",
+    "steamID": "1091500",
+    "genres": [
+      "RPG",
+      "Action",
+      "Open-World"
+    ],
+    "rating": "7.2",
     "publisher": "CD Projekt",
-    "genre": ["RPG", "Action", "Open-World"],
-    "platforms": ["PC", "PlayStation", "Xbox"],
-    "steamid": "1091500",
-    "release_year": "2020",
+    "developer": "CD Projekt Red",
     "playtime": "90",
-    "tags": ["Sci-Fi", "Story-rich"]
+    "title": "Cyberpunk 2077",
+    "releaseYear": "2020",
+    "platforms": [
+      "PC",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Sci-Fi",
+      "Story-rich"
+    ]
   },
   {
-    "title": "Dark Souls III",
-    "developer": "FromSoftware",
+    "steamID": "374320",
+    "genres": [
+      "RPG",
+      "Action"
+    ],
+    "rating": "9.2",
     "publisher": "Bandai Namco",
-    "genre": ["RPG", "Action"],
-    "platforms": ["PC", "PlayStation", "Xbox"],
-    "steamid": "374320",
-    "release_year": "2016",
+    "developer": "FromSoftware",
     "playtime": "80",
-    "tags": ["Souls-like", "Dark Fantasy"]
+    "title": "Dark Souls III",
+    "releaseYear": "2016",
+    "platforms": [
+      "PC",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Souls-like",
+      "Dark Fantasy"
+    ]
   },
   {
-    "title": "Stardew Valley",
-    "developer": "ConcernedApe",
+    "steamID": "413150",
+    "genres": [
+      "Simulation",
+      "RPG"
+    ],
+    "rating": "9.5",
     "publisher": "ConcernedApe",
-    "genre": ["Simulation", "RPG"],
-    "platforms": ["PC", "Switch", "PlayStation", "Xbox", "Mobile"],
-    "steamid": "413150",
-    "release_year": "2016",
+    "developer": "ConcernedApe",
     "playtime": "200",
-    "tags": ["Farming", "Relaxing"]
+    "title": "Stardew Valley",
+    "releaseYear": "2016",
+    "platforms": [
+      "PC",
+      "Switch",
+      "PlayStation",
+      "Xbox",
+      "Mobile"
+    ],
+    "tags": [
+      "Farming",
+      "Relaxing"
+    ]
   },
   {
-    "title": "DOOM Eternal",
-    "developer": "id Software",
+    "steamID": "292030",
+    "genres": [
+      "RPG",
+      "Open-World"
+    ],
+    "rating": "9.8",
+    "publisher": "CD Projekt",
+    "developer": "CD Projekt Red",
+    "playtime": "150",
+    "title": "The Witcher 3: Wild Hunt",
+    "releaseYear": "2016",
+    "platforms": [
+      "PC",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Story-rich",
+      "Fantasy"
+    ]
+  },
+  {
+    "steamID": "620",
+    "genres": [
+      "Puzzle",
+      "First-Person"
+    ],
+    "rating": "9.8",
+    "publisher": "Valve",
+    "developer": "Valve",
+    "playtime": "16",
+    "title": "Portal 2",
+    "releaseYear": "2014",
+    "platforms": [
+      "PC",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Co-op",
+      "Humor"
+    ]
+  },
+  {
+    "steamID": "1174180",
+    "genres": [
+      "Action",
+      "Open-World"
+    ],
+    "rating": "9.6",
+    "publisher": "Rockstar Games",
+    "developer": "Rockstar Games",
+    "playtime": "120",
+    "title": "Red Dead Redemption 2",
+    "releaseYear": "2018",
+    "platforms": [
+      "PC",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Story-rich",
+      "Western"
+    ]
+  },
+  {
+    "steamID": "782330",
+    "genres": [
+      "FPS",
+      "Action"
+    ],
+    "rating": "8",
     "publisher": "Bethesda",
-    "genre": ["FPS", "Action"],
-    "platforms": ["PC", "PlayStation", "Xbox", "Switch"],
-    "steamid": "782330",
-    "release_year": "2020",
+    "developer": "id Software",
     "playtime": "30",
-    "tags": ["Fast-paced", "Gore"]
+    "title": "DOOM Eternal",
+    "releaseYear": "2020",
+    "platforms": [
+      "PC",
+      "PlayStation",
+      "Xbox",
+      "Switch"
+    ],
+    "tags": [
+      "Fast-paced",
+      "Gore"
+    ]
+  },
+  {
+    "steamID": "1222140",
+    "genres": [
+      "Horror",
+      "Survival",
+      "Action"
+    ],
+    "rating": "7.4",
+    "publisher": "Red Barrels",
+    "developer": "Red Barrels",
+    "playtime": "12",
+    "title": "Outlast",
+    "releaseYear": "2013",
+    "platforms": [
+      "PC",
+      "PlayStation",
+      "Xbox",
+      "Switch"
+    ],
+    "tags": [
+      "Psychological Horror",
+      "First-Person",
+      "Survival"
+    ]
+  },
+  {
+    "steamID": "",
+    "genres": [""],
+    "rating": "3",
+    "publisher": "",
+    "developer": "",
+    "playtime": "",
+    "title": "sa",
+    "releaseYear": "",
+    "platforms": [""],
+    "tags": [""]
+  },
+  {
+    "steamID": "",
+    "genres": [""],
+    "rating": "5",
+    "publisher": "",
+    "developer": "",
+    "playtime": "",
+    "title": "ds",
+    "releaseYear": "",
+    "platforms": [""],
+    "tags": [""]
+  },
+  {
+    "steamID": "",
+    "genres": [""],
+    "rating": "7",
+    "publisher": "",
+    "developer": "",
+    "playtime": "",
+    "title": "rq",
+    "releaseYear": "",
+    "platforms": [""],
+    "tags": [""]
   }
 ]
