@@ -396,21 +396,21 @@ public class newApp extends Application {
             boolean isTenScale = rating > 5; // Assume ratings >5 are on 10-point scale
 
             // Normalize to 5-point scale for display
-            double displayRating = isTenScale ? rating / 2 : rating;
+            double displayRating = isTenScale ? rating  : rating;
 
             // Create star container
             HBox starsBox = new HBox(2);
 
             // Determine star rating (using if-else instead of loops)
-            if (displayRating <= 5 && displayRating > 4) {
+            if (displayRating <= 10 && displayRating > 8) {
                 addStars(starsBox, 5, 0); // ★★★★★
-            } else if (displayRating <= 4 && displayRating > 3) {
+            } else if (displayRating <= 8 && displayRating > 6) {
                 addStars(starsBox, 4, 1); // ★★★★☆
-            } else if (displayRating <= 3 && displayRating > 2) {
+            } else if (displayRating <= 6 && displayRating > 4) {
                 addStars(starsBox, 3, 2); // ★★★☆☆
-            } else if (displayRating <= 2 && displayRating > 1) {
+            } else if (displayRating <= 4 && displayRating > 2) {
                 addStars(starsBox, 2, 3); // ★★☆☆☆
-            } else if (displayRating <= 1 && displayRating > 0) {
+            } else if (displayRating <= 2 && displayRating > 0) {
                 addStars(starsBox, 1, 4); // ★☆☆☆☆
             } else {
                 addStars(starsBox, 0, 5); // ☆☆☆☆☆
