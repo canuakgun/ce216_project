@@ -294,19 +294,14 @@ public class newApp extends Application {
     }
 
     private void searchGames() {
-        String query = filterField.getText().toLowerCase();
+        String query = filterField.getText().toLowerCase(); // Convert query to lowercase for case-insensitive search
         if (query.isEmpty()) {
-            refreshGameList();
+            refreshGameList(); // Refresh the list if the query is empty
             return;
         }
 
-        ObservableList<Game> filteredGames = FXCollections.observableArrayList();
-        for (Game game : handler.getAllGames()) {
-            if (game.getGameTitle().toLowerCase().contains(query)) {
-                filteredGames.add(game);
-            }
-        }
-        gamesList.setItems(filteredGames);
+        List<Game> results = handler.searchGames(query); // Use the handler to search for games
+        gamesList.setItems(FXCollections.observableArrayList(results)); // Update the ListView with the search results
     }
 
     private void filterByGenre() {
