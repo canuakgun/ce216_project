@@ -1,5 +1,3 @@
-package com.example.gamecatalogproject;
-
 import java.util.List;
 
 public class Game {
@@ -115,4 +113,6 @@ public class Game {
         Game game = (Game) obj;
         return gameTitle != null && gameTitle.equals(game.gameTitle);
     }
-}
+} 
+    
+
