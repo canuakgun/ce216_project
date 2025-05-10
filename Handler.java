@@ -1,3 +1,10 @@
+package com.example.gamecatalogproject;
+
+import org.json.JSONArray;
+
+import java.io.File;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,11 +20,41 @@ public class Handler {
         this.jsonFilePath = "List.json"; // Will be in the working directory
 
         // Try to load from JAR resources first
-        List<Game> games = jsonParser.readFromJsonFile(jsonFilePath);
-        if (games != null && !games.isEmpty()) {
-            collection.addAll(games);
-        }
+       loadExternalFile();
     }
+    private void loadExternalFile() {
+          try {
+        // First try to load from working directory
+        File externalFile = new File(jsonFilePath);
+        if (externalFile.exists()) {
+            List<Game> games = jsonParser.readFromJsonFile(jsonFilePath);
+            if (games != null && !games.isEmpty()) {
+                collection.addAll(games);
+            }
+        } else {
+            // If no external file exists, try to load from JAR as fallback
+            InputStream is = getClass().getResourceAsStream("/" + jsonFilePath);
+            if (is != null) {
+                String text = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+                JSONArray arr = new JSONArray(text);
+                List<Game> games = new ArrayList<>();
+                for (int i = 0; i < arr.length(); i++) {
+                    Game game = jsonParser.parseGameObject(arr.getJSONObject(i));
+                    if (game != null) {
+                        games.add(game);
+                    }
+                }
+                collection.addAll(games);
+                is.close();
+            }
+            // Create the external file for future use
+            saveCollectionToFile();
+        }
+    } catch (Exception e) {
+        System.err.println("Error loading games: " + e.getMessage());
+    }
+}
+
     // Initialization methods
     public void loadGamesFromJson(String filePath) {
         List<Game> games = jsonParser.readFromJsonFile(filePath);
@@ -87,6 +124,7 @@ public class Handler {
         return collection.getGamesByPlatform(platform);
     }
 
+    public List<Game> filterByYear(String year) { return collection.getGamesByYear((year));}
     // Collection information
     public int getCollectionSize() {
         return collection.size();
@@ -131,6 +169,13 @@ public class Handler {
         }
         return new ArrayList<>(); // Return empty list if collection is null
     }
+    public List<Game> getAllGenres(){
+        if(collection !=null){
+            return collection.getAllGenres;
+        }
+        return new ArrayList<>();
+    }
+
 
     public void printFilteredResults(String filterType, String filterValue, List<Game> results) {
         if (results == null || results.isEmpty()) {
@@ -152,9 +197,10 @@ public class Handler {
                         game.getGameTitle().toLowerCase().contains(lowerQuery) ||
                                 game.getGameDeveloper().toLowerCase().contains(lowerQuery) ||
                                 game.getGamePublisher().toLowerCase().contains(lowerQuery) ||
-                                String.valueOf(game.getGameReleaseYear()).toLowerCase().contains(lowerQuery) || // Convert release year to string
-                                String.valueOf(game.getGamePlaytime()).toLowerCase().contains(lowerQuery) || // Convert playtime to string
-                                String.valueOf(game.getGameSteamID()).toLowerCase().contains(lowerQuery) || // Convert Steam ID to string
+                                String.valueOf(game.getGameReleaseYear()).toLowerCase().contains(lowerQuery) ||
+                                String.valueOf(game.getGamePlaytime()).toLowerCase().contains(lowerQuery) ||
+                                String.valueOf(game.getGameSteamID()).toLowerCase().contains(lowerQuery) ||
+                                String.valueOf(game.getGameRating()).toLowerCase().contains(lowerQuery) ||
                                 game.getGameGenre().stream().anyMatch(genre -> genre.toLowerCase().contains(lowerQuery)) ||
                                 game.getGamePlatforms().stream().anyMatch(platform -> platform.toLowerCase().contains(lowerQuery)) ||
                                 game.getGameTags().stream().anyMatch(tag -> tag.toLowerCase().contains(lowerQuery))
