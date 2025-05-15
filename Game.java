@@ -12,6 +12,7 @@ public class Game {
     private String gamePlaytime;
     private List<String> gameTags;
     private String gameRating;
+
     // for the genres,tags and platforms we can have multiple so we decided to use a ["x","y"] bracket for the multiple variable attributes so that in the parsing part we can easily apart them from others;
 
 
