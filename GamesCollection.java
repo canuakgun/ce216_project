@@ -63,11 +63,10 @@ public class GamesCollection {
         return index != -1 ? collection.get(index) : null;
     }
 
-    // Bulk operations
     public void addAll(List<Game> games) {
         if (games != null) {
             for (Game game : games) {
-                add(game); // Uses our add method which checks for duplicates
+                add(game);
             }
         }
     }
