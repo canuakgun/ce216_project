@@ -68,9 +68,15 @@ public class Handler {
 
     // Basic operations
     public boolean addGame(Game game) {
-        if (game == null || collection.contains(game.getGameTitle())) {
-            return false;
+        if (game == null) return false;
+
+        for (Game g : collection.getAllGames()) {
+            if (g.getGameSteamID().equals(game.getGameSteamID()) ||
+                    g.getGameTitle().equalsIgnoreCase(game.getGameTitle())) {
+                return false; // Duplicate steamId or title
+            }
         }
+
         collection.add(game);
         return saveCollectionToFile();
     }
@@ -97,14 +103,51 @@ public class Handler {
         return collection.contains(title);
     }
 
-    // Bulk operations
     public int addGamesFromList(List<Game> games) {
-        if (games == null) return 0;
+        if (games == null || games.isEmpty()) {
+            return 0;
+        }
 
-        int initialSize = collection.size();
-        collection.addAll(games);
-        saveCollectionToFile(); // Save after bulk addition
-        return collection.size() - initialSize;
+        int addedCount = 0;
+        List<Game> uniqueGames = new ArrayList<>();
+
+        for (Game newGame : games) {
+            // Skip null games
+            if (newGame == null) {
+                System.out.println("Skipping null game in import list");
+                continue;
+            }
+
+            boolean isDuplicate = collection.getAllGames().stream()
+                    .anyMatch(existing ->
+                            // Match by title (case-insensitive)
+                            existing.getGameTitle().equalsIgnoreCase(newGame.getGameTitle()) ||
+                                    // OR match by SteamID (if both exist)
+                                    (newGame.getGameSteamID() != null &&
+                                            !newGame.getGameSteamID().isEmpty() &&
+                                            newGame.getGameSteamID().equals(existing.getGameSteamID()))
+                    );
+
+            if (!isDuplicate) {
+                uniqueGames.add(newGame);
+                addedCount++;
+                System.out.println("Adding new game: " + newGame.getGameTitle());
+            } else {
+                System.out.println("Skipping duplicate game - Title: " + newGame.getGameTitle() +
+                        (newGame.getGameSteamID() != null ?
+                                ", SteamID: " + newGame.getGameSteamID() : ""));
+            }
+        }
+
+        if (!uniqueGames.isEmpty()) {
+            collection.addAll(uniqueGames);
+            saveCollectionToFile();
+            System.out.println("Successfully added " + addedCount + " new games");
+        } else {
+            System.out.println("No new games to add - all were duplicates");
+        }
+
+        return addedCount;
     }
 
     // Filtering operations
@@ -169,14 +212,91 @@ public class Handler {
         }
         return new ArrayList<>(); // Return empty list if collection is null
     }
-    public List<Game> getAllGenres(){
-        if(collection !=null){
-            return collection.getAllGenres;
+
+    public void refreshData() {
+        // Clear the current collection
+        collection.clear();
+
+        // Try to load from external file first
+        File externalFile = new File(jsonFilePath);
+        if (externalFile.exists()) {
+            List<Game> games = jsonParser.readFromJsonFile(jsonFilePath);
+            if (games != null && !games.isEmpty()) {
+                collection.addAll(games);
+                return; // Successfully loaded from external file
+            }
         }
-        return new ArrayList<>();
+
+        // Fallback to loading from JAR resources if external file doesn't exist or is empty
+        try (InputStream is = getClass().getResourceAsStream("/" + jsonFilePath)) {
+            if (is != null) {
+                String text = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+                JSONArray arr = new JSONArray(text);
+                List<Game> games = new ArrayList<>();
+
+                for (int i = 0; i < arr.length(); i++) {
+                    Game game = jsonParser.parseGameObject(arr.getJSONObject(i));
+                    if (game != null) {
+                        games.add(game);
+                    }
+                }
+
+                collection.addAll(games);
+
+                // Create/update the external file for future use
+                saveCollectionToFile();
+            }
+        } catch (Exception e) {
+            System.err.println("Error refreshing game data: " + e.getMessage());
+        }
+    }
+    public List<String> getAllGenres() {
+        return collection.getAllGames().stream()
+                .flatMap(game -> game.getGameGenre().stream())
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
     }
 
+    public List<String> getAllReleaseYears() {
+        return collection.getAllGames().stream()
+                .map(Game::getGameReleaseYear)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+    }
 
+    public List<String> getAllPublishers() {
+        return collection.getAllGames().stream()
+                .map(Game::getGamePublisher)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getAllTags() {
+        return collection.getAllGames().stream()
+                .flatMap(game -> game.getGameTags().stream())
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getAllDevelopers() {
+        return collection.getAllGames().stream()
+                .map(Game::getGameDeveloper)
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    public List<String> getAllPlatforms() {
+        return collection.getAllGames().stream()
+                .flatMap(game -> game.getGamePlatforms().stream())
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+    }
     public void printFilteredResults(String filterType, String filterValue, List<Game> results) {
         if (results == null || results.isEmpty()) {
             System.out.println("No games found with " + filterType + ": " + filterValue);
