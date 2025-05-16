@@ -1,2 +1,1 @@
-# ce216_project
-// 
+guys the list.json file is crooked. need a hand.
