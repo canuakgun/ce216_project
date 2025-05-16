@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GamesCollection {
-    public List<Game> getAllGenres;
     private List<Game> collection;
 
     public GamesCollection() {
@@ -95,11 +94,12 @@ public class GamesCollection {
                 .filter(game -> game.getGamePlatforms().contains(platform))
                 .collect(Collectors.toList());
     }
-        public List<Game> getGamesByYear(String year){
-            return collection.stream()
-                    .filter(game -> game.getGameReleaseYear().contains(year))
-                    .collect(Collectors.toList());
-        }
+
+    public List<Game> getGamesByYear(String year) {
+        return collection.stream()
+                .filter(game -> game.getGameReleaseYear().contains(year))
+                .collect(Collectors.toList());
+    }
 
     // Getter with defensive copy
     public List<Game> getAllGames() {

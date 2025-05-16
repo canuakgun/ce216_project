@@ -1,7 +1,5 @@
 package com.example.gamecatalogproject;
 
-import org.json.JSONArray;
-
 import java.io.File;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -11,12 +9,12 @@ import java.util.stream.Collectors;
 
 public class Handler {
     private GamesCollection collection;
-    private JSONParser jsonParser;
+    private jsonParser jsonParser;
     private String jsonFilePath;
 
     public Handler() {
         this.collection = new GamesCollection();
-        this.jsonParser = new JSONParser();
+        this.jsonParser = new jsonParser();
         this.jsonFilePath = "List.json"; // Will be in the working directory
 
         // Try to load from JAR resources first
@@ -204,6 +202,7 @@ public class Handler {
         System.out.println("Release Year: " + game.getGameReleaseYear());
         System.out.println("Playtime: " + game.getGamePlaytime() + " hours");
         System.out.println("Tags: " + String.join(", ", game.getGameTags()));
+        System.out.println("Image Path: " + game.getImagePath());
     }
 
     public List<Game> getAllGames() {
@@ -328,7 +327,7 @@ public class Handler {
                 .collect(Collectors.toList());
     }
 
-    public JSONParser getJsonParser() {
+    public jsonParser getJsonParser() {
         return jsonParser;
     }
 }

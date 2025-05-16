@@ -1,34 +1,12 @@
 [
   {
-    "steamID": "1145360",
-    "genres": [
-      "Roguelike",
-      "Action"
-    ],
-    "rating": "9.3",
-    "publisher": "Supergiant Games",
-    "developer": "Supergiant Games",
-    "playtime": "60",
-    "title": "Hades",
-    "releaseYear": "2020",
-    "platforms": [
-      "PC",
-      "Switch",
-      "PlayStation",
-      "Xbox"
-    ],
-    "tags": [
-      "Mythology",
-      "Indie"
-    ]
-  },
-  {
     "steamID": "1245620",
     "genres": [
       "RPG",
       "Action",
       "Open-World"
     ],
+    "imagePath": "images/default_game.png",
     "rating": "9.7",
     "publisher": "Bandai Namco",
     "developer": "FromSoftware",
@@ -52,6 +30,7 @@
       "Action",
       "Platformer"
     ],
+    "imagePath": "images/default_game.png",
     "rating": "9.4",
     "publisher": "Team Cherry",
     "developer": "Team Cherry",
@@ -76,6 +55,7 @@
       "Action",
       "Open-World"
     ],
+    "imagePath": "images/default_game.png",
     "rating": "7.2",
     "publisher": "CD Projekt",
     "developer": "CD Projekt Red",
@@ -98,6 +78,7 @@
       "RPG",
       "Action"
     ],
+    "imagePath": "images/default_game.png",
     "rating": "9.2",
     "publisher": "Bandai Namco",
     "developer": "FromSoftware",
@@ -120,6 +101,7 @@
       "Simulation",
       "RPG"
     ],
+    "imagePath": "images/default_game.png",
     "rating": "9.5",
     "publisher": "ConcernedApe",
     "developer": "ConcernedApe",
@@ -144,6 +126,7 @@
       "RPG",
       "Open-World"
     ],
+    "imagePath": "images/default_game.png",
     "rating": "9.8",
     "publisher": "CD Projekt",
     "developer": "CD Projekt Red",
@@ -166,6 +149,7 @@
       "Puzzle",
       "First-Person"
     ],
+    "imagePath": "images/default_game.png",
     "rating": "9.8",
     "publisher": "Valve",
     "developer": "Valve",
@@ -188,6 +172,7 @@
       "Action",
       "Open-World"
     ],
+    "imagePath": "images/default_game.png",
     "rating": "9.6",
     "publisher": "Rockstar Games",
     "developer": "Rockstar Games",
@@ -210,6 +195,7 @@
       "FPS",
       "Action"
     ],
+    "imagePath": "images/default_game.png",
     "rating": "8",
     "publisher": "Bethesda",
     "developer": "id Software",
@@ -234,6 +220,7 @@
       "Survival",
       "Action"
     ],
+    "imagePath": "images/default_game.png",
     "rating": "7.4",
     "publisher": "Red Barrels",
     "developer": "Red Barrels",
@@ -255,6 +242,7 @@
   {
     "steamID": "",
     "genres": [""],
+    "imagePath": "images/default_game.png",
     "rating": "3",
     "publisher": "",
     "developer": "",
@@ -267,7 +255,8 @@
   {
     "steamID": "",
     "genres": [""],
-    "rating": "5",
+    "imagePath": "images/default_game.png",
+    "rating": "4.6",
     "publisher": "",
     "developer": "",
     "playtime": "",
@@ -277,15 +266,27 @@
     "tags": [""]
   },
   {
-    "steamID": "",
-    "genres": [""],
-    "rating": "7",
-    "publisher": "",
-    "developer": "",
-    "playtime": "",
-    "title": "rq",
-    "releaseYear": "",
-    "platforms": [""],
-    "tags": [""]
+    "steamID": "1145360",
+    "genres": [
+      "Roguelike",
+      "Action"
+    ],
+    "imagePath": "images/mario.png",
+    "rating": "9.5",
+    "publisher": "Supergiant Games",
+    "developer": "Supergiant Games",
+    "playtime": "60",
+    "title": "Hades",
+    "releaseYear": "2020",
+    "platforms": [
+      "PC",
+      "Switch",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Mythology",
+      "Indie"
+    ]
   }
 ]

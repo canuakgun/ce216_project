@@ -7,12 +7,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JSONParser {
+public class jsonParser {
     public ArrayList<Game> readFromJsonFile(String fileName) {
         ArrayList<Game> result = new ArrayList<>();
 
@@ -67,7 +66,8 @@ public class JSONParser {
                 gameObj.put("releaseYear", game.getGameReleaseYear());
                 gameObj.put("playtime", game.getGamePlaytime());
                 gameObj.put("tags", new JSONArray(game.getGameTags()));
-                gameObj.put("rating", game.getGameRating()); // Ensure rating is saved
+                gameObj.put("rating", game.getGameRating());
+                gameObj.put("imagePath", game.getImagePath()); // imagePath alanı eklendi
                 jsonArray.put(gameObj);
             }
 
@@ -99,6 +99,9 @@ public class JSONParser {
             String developer = gameObj.getString("developer");
             String publisher = gameObj.getString("publisher");
 
+            String imagePath = gameObj.has("imagePath") ?
+                gameObj.getString("imagePath") : "images/default_game.png";
+
             JSONArray genresArray = gameObj.has("genres") ?
                     gameObj.getJSONArray("genres") : gameObj.getJSONArray("genre");
             List<String> genres = jsonArrayToList(genresArray);
@@ -116,11 +119,11 @@ public class JSONParser {
 
             JSONArray tagsArray = gameObj.getJSONArray("tags");
             List<String> tags = jsonArrayToList(tagsArray);
-            String rating = gameObj.has("rating") ? gameObj.getString("rating") : "0.0"; // Added rating field
+            String rating = gameObj.has("rating") ? gameObj.getString("rating") : "0.0";
 
-
+            // imagePath parametresi ile Game nesnesi oluşturuluyor
             return new Game(title, developer, publisher, genres, platforms,
-                    steamID, releaseYear, playtime, tags,rating);
+                    steamID, releaseYear, playtime, tags, rating, imagePath);
         } catch (Exception e) {
             System.out.println("Error parsing game object: " + e.toString());
             return null;
@@ -134,4 +137,3 @@ public class JSONParser {
         }
         return list;
     }
-}
