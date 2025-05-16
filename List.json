@@ -1,12 +1,34 @@
 [
   {
+    "steamID": "1145360",
+    "genres": [
+      "Roguelike",
+      "Action"
+    ],
+    "rating": "9.3",
+    "publisher": "Supergiant Games",
+    "developer": "Supergiant Games",
+    "playtime": "60",
+    "title": "Hades",
+    "releaseYear": "2020",
+    "platforms": [
+      "PC",
+      "Switch",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Mythology",
+      "Indie"
+    ]
+  },
+  {
     "steamID": "1245620",
     "genres": [
       "RPG",
       "Action",
       "Open-World"
     ],
-    "imagePath": "images/default_game.png",
     "rating": "9.7",
     "publisher": "Bandai Namco",
     "developer": "FromSoftware",
@@ -30,7 +52,6 @@
       "Action",
       "Platformer"
     ],
-    "imagePath": "images/default_game.png",
     "rating": "9.4",
     "publisher": "Team Cherry",
     "developer": "Team Cherry",
@@ -55,7 +76,6 @@
       "Action",
       "Open-World"
     ],
-    "imagePath": "images/default_game.png",
     "rating": "7.2",
     "publisher": "CD Projekt",
     "developer": "CD Projekt Red",
@@ -78,7 +98,6 @@
       "RPG",
       "Action"
     ],
-    "imagePath": "images/default_game.png",
     "rating": "9.2",
     "publisher": "Bandai Namco",
     "developer": "FromSoftware",
@@ -101,7 +120,6 @@
       "Simulation",
       "RPG"
     ],
-    "imagePath": "images/default_game.png",
     "rating": "9.5",
     "publisher": "ConcernedApe",
     "developer": "ConcernedApe",
@@ -126,7 +144,6 @@
       "RPG",
       "Open-World"
     ],
-    "imagePath": "images/default_game.png",
     "rating": "9.8",
     "publisher": "CD Projekt",
     "developer": "CD Projekt Red",
@@ -149,13 +166,12 @@
       "Puzzle",
       "First-Person"
     ],
-    "imagePath": "images/default_game.png",
     "rating": "9.8",
     "publisher": "Valve",
     "developer": "Valve",
     "playtime": "16",
     "title": "Portal 2",
-    "releaseYear": "2014",
+    "releaseYear": "2011",
     "platforms": [
       "PC",
       "PlayStation",
@@ -172,7 +188,6 @@
       "Action",
       "Open-World"
     ],
-    "imagePath": "images/default_game.png",
     "rating": "9.6",
     "publisher": "Rockstar Games",
     "developer": "Rockstar Games",
@@ -195,8 +210,7 @@
       "FPS",
       "Action"
     ],
-    "imagePath": "images/default_game.png",
-    "rating": "8",
+    "rating": "3",
     "publisher": "Bethesda",
     "developer": "id Software",
     "playtime": "30",
@@ -214,78 +228,1423 @@
     ]
   },
   {
-    "steamID": "1222140",
+    "steamID": "186148",
     "genres": [
-      "Horror",
-      "Survival",
-      "Action"
+      "MMO",
+      "Open-World"
     ],
-    "imagePath": "images/default_game.png",
-    "rating": "7.4",
-    "publisher": "Red Barrels",
-    "developer": "Red Barrels",
-    "playtime": "12",
-    "title": "Outlast",
-    "releaseYear": "2013",
+    "rating": "7.5",
+    "publisher": "2K Sports",
+    "developer": "id Software",
+    "playtime": "150",
+    "title": "FIFA 24",
+    "releaseYear": "2016",
     "platforms": [
       "PC",
-      "PlayStation",
-      "Xbox",
-      "Switch"
+      "PlayStation"
     ],
     "tags": [
-      "Psychological Horror",
-      "First-Person",
-      "Survival"
+      "Relaxing",
+      "Casual"
     ]
   },
   {
-    "steamID": "",
-    "genres": [""],
-    "imagePath": "images/default_game.png",
-    "rating": "3",
-    "publisher": "",
-    "developer": "",
-    "playtime": "",
-    "title": "sa",
-    "releaseYear": "",
-    "platforms": [""],
-    "tags": [""]
-  },
-  {
-    "steamID": "",
-    "genres": [""],
-    "imagePath": "images/default_game.png",
-    "rating": "4.6",
-    "publisher": "",
-    "developer": "",
-    "playtime": "",
-    "title": "ds",
-    "releaseYear": "",
-    "platforms": [""],
-    "tags": [""]
-  },
-  {
-    "steamID": "1145360",
+    "steamID": "608756",
     "genres": [
-      "Roguelike",
-      "Action"
+      "Simulation",
+      "Casual"
     ],
-    "imagePath": "images/mario.png",
-    "rating": "9.5",
-    "publisher": "Supergiant Games",
-    "developer": "Supergiant Games",
-    "playtime": "60",
-    "title": "Hades",
-    "releaseYear": "2020",
+    "rating": "9.0",
+    "publisher": "Rockstar Games",
+    "developer": "id Software",
+    "playtime": "157",
+    "title": "NBA 2K24",
+    "releaseYear": "2016",
+    "platforms": [
+      "Switch",
+      "Mobile"
+    ],
+    "tags": [
+      "Co-op",
+      "PvE"
+    ]
+  },
+  {
+    "steamID": "626659",
+    "genres": [
+      "Adventure",
+      "Puzzle"
+    ],
+    "rating": "6.6",
+    "publisher": "Activision",
+    "developer": "id Software",
+    "playtime": "38",
+    "title": "Rocket League",
+    "releaseYear": "2019",
+    "platforms": [
+      "Switch",
+      "Mobile"
+    ],
+    "tags": [
+      "Realistic",
+      "Simulation"
+    ]
+  },
+  {
+    "steamID": "997429",
+    "genres": [
+      "Strategy",
+      "Tactical"
+    ],
+    "rating": "8.9",
+    "publisher": "Ubisoft",
+    "developer": "id Software",
+    "playtime": "173",
+    "title": "Forza Horizon 5",
+    "releaseYear": "2016",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Relaxing",
+      "Casual"
+    ]
+  },
+  {
+    "steamID": "373370",
+    "genres": [
+      "MMO",
+      "Open-World"
+    ],
+    "rating": "7.5",
+    "publisher": "Activision",
+    "developer": "Santa Monica Studio",
+    "playtime": "14",
+    "title": "The Sims 4",
+    "releaseYear": "2016",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Multiplayer",
+      "Online"
+    ]
+  },
+  {
+    "steamID": "731577",
+    "genres": [
+      "MMO",
+      "Open-World"
+    ],
+    "rating": "6.4",
+    "publisher": "EA Sports",
+    "developer": "Rockstar North",
+    "playtime": "77",
+    "title": "Call of Duty: Modern Warfare II",
+    "releaseYear": "2023",
     "platforms": [
       "PC",
-      "Switch",
+      "Xbox"
+    ],
+    "tags": [
+      "Fast-paced",
+      "Gore"
+    ]
+  },
+  {
+    "steamID": "719585",
+    "genres": [
+      "MMO",
+      "Open-World"
+    ],
+    "rating": "9.3",
+    "publisher": "EA Sports",
+    "developer": "Nintendo EPD",
+    "playtime": "138",
+    "title": "Civilization VI",
+    "releaseYear": "2021",
+    "platforms": [
+      "PC",
       "PlayStation",
       "Xbox"
     ],
     "tags": [
-      "Mythology",
+      "Multiplayer",
+      "Online"
+    ]
+  },
+  {
+    "steamID": "584495",
+    "genres": [
+      "MMO",
+      "Open-World"
+    ],
+    "rating": "6.5",
+    "publisher": "Nintendo",
+    "developer": "Ubisoft Montreal",
+    "playtime": "136",
+    "title": "Assassin's Creed Valhalla",
+    "releaseYear": "2022",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Co-op",
+      "PvE"
+    ]
+  },
+  {
+    "steamID": "694606",
+    "genres": [
+      "MMO",
+      "Open-World"
+    ],
+    "rating": "7.8",
+    "publisher": "Sony",
+    "developer": "Valve",
+    "playtime": "129",
+    "title": "Battlefield 2042",
+    "releaseYear": "2018",
+    "platforms": [
+      "Switch",
+      "Mobile"
+    ],
+    "tags": [
+      "Multiplayer",
+      "Online"
+    ]
+  },
+  {
+    "steamID": "997074",
+    "genres": [
+      "Fighting",
+      "Action"
+    ],
+    "rating": "7.4",
+    "publisher": "2K Sports",
+    "developer": "2K",
+    "playtime": "173",
+    "title": "Apex Legends",
+    "releaseYear": "2022",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Competitive",
+      "Ranked"
+    ]
+  },
+  {
+    "steamID": "328618",
+    "genres": [
+      "Indie",
+      "Platformer"
+    ],
+    "rating": "9.0",
+    "publisher": "EA Sports",
+    "developer": "EA",
+    "playtime": "40",
+    "title": "God of War",
+    "releaseYear": "2020",
+    "platforms": [
+      "PC",
+      "Xbox"
+    ],
+    "tags": [
+      "Co-op",
+      "PvE"
+    ]
+  },
+  {
+    "steamID": "781337",
+    "genres": [
+      "Fighting",
+      "Action"
+    ],
+    "rating": "8.5",
+    "publisher": "Valve",
+    "developer": "id Software",
+    "playtime": "54",
+    "title": "Minecraft",
+    "releaseYear": "2019",
+    "platforms": [
+      "PC",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Story-rich",
+      "Fantasy"
+    ]
+  },
+  {
+    "steamID": "180899",
+    "genres": [
+      "RPG",
+      "Action"
+    ],
+    "rating": "8.4",
+    "publisher": "Activision",
+    "developer": "id Software",
+    "playtime": "161",
+    "title": "Terraria",
+    "releaseYear": "2016",
+    "platforms": [
+      "Switch",
+      "Mobile"
+    ],
+    "tags": [
+      "Fast-paced",
+      "Gore"
+    ]
+  },
+  {
+    "steamID": "710898",
+    "genres": [
+      "Strategy",
+      "Tactical"
+    ],
+    "rating": "7.0",
+    "publisher": "Activision",
+    "developer": "Infinity Ward",
+    "playtime": "47",
+    "title": "League of Legends",
+    "releaseYear": "2015",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Multiplayer",
+      "Online"
+    ]
+  },
+  {
+    "steamID": "557523",
+    "genres": [
+      "Sports",
+      "Multiplayer"
+    ],
+    "rating": "8.7",
+    "publisher": "Rockstar Games",
+    "developer": "Rockstar North",
+    "playtime": "13",
+    "title": "Valorant",
+    "releaseYear": "2024",
+    "platforms": [
+      "PC",
+      "PlayStation"
+    ],
+    "tags": [
+      "Realistic",
+      "Simulation"
+    ]
+  },
+  {
+    "steamID": "169246",
+    "genres": [
+      "Racing",
+      "Arcade"
+    ],
+    "rating": "8.3",
+    "publisher": "Nintendo",
+    "developer": "Ubisoft Montreal",
+    "playtime": "97",
+    "title": "Counter-Strike 2",
+    "releaseYear": "2023",
+    "platforms": ["PC"],
+    "tags": [
+      "Relaxing",
+      "Casual"
+    ]
+  },
+  {
+    "steamID": "269526",
+    "genres": [
+      "FPS",
+      "Shooter"
+    ],
+    "rating": "6.1",
+    "publisher": "Valve",
+    "developer": "Rockstar North",
+    "playtime": "69",
+    "title": "Genshin Impact",
+    "releaseYear": "2022",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Exploration",
+      "Survival"
+    ]
+  },
+  {
+    "steamID": "116955",
+    "genres": [
+      "RPG",
+      "Action"
+    ],
+    "rating": "8.8",
+    "publisher": "2K Sports",
+    "developer": "EA",
+    "playtime": "39",
+    "title": "Overwatch 2",
+    "releaseYear": "2023",
+    "platforms": ["PC"],
+    "tags": [
+      "Multiplayer",
+      "Online"
+    ]
+  },
+  {
+    "steamID": "722025",
+    "genres": [
+      "RPG",
+      "Action"
+    ],
+    "rating": "8.9",
+    "publisher": "Sony",
+    "developer": "2K",
+    "playtime": "170",
+    "title": "Dota 2",
+    "releaseYear": "2024",
+    "platforms": [
+      "Switch",
+      "Mobile"
+    ],
+    "tags": [
+      "Realistic",
+      "Simulation"
+    ]
+  },
+  {
+    "steamID": "744958",
+    "genres": [
+      "Strategy",
+      "Tactical"
+    ],
+    "rating": "8.7",
+    "publisher": "Rockstar Games",
+    "developer": "Valve",
+    "playtime": "170",
+    "title": "PUBG",
+    "releaseYear": "2019",
+    "platforms": [
+      "PC",
+      "Xbox"
+    ],
+    "tags": [
+      "Fast-paced",
+      "Gore"
+    ]
+  },
+  {
+    "steamID": "557274",
+    "genres": [
+      "Sports",
+      "Multiplayer"
+    ],
+    "rating": "8.9",
+    "publisher": "EA Sports",
+    "developer": "id Software",
+    "playtime": "117",
+    "title": "ARK: Survival Evolved",
+    "releaseYear": "2014",
+    "platforms": [
+      "PC",
+      "PlayStation"
+    ],
+    "tags": [
+      "Exploration",
+      "Survival"
+    ]
+  },
+  {
+    "steamID": "772682",
+    "genres": [
+      "Adventure",
+      "Puzzle"
+    ],
+    "rating": "6.7",
+    "publisher": "2K Sports",
+    "developer": "2K",
+    "playtime": "14",
+    "title": "Cities: Skylines",
+    "releaseYear": "2024",
+    "platforms": ["PC"],
+    "tags": [
+      "Co-op",
+      "PvE"
+    ]
+  },
+  {
+    "steamID": "110733",
+    "genres": [
+      "Adventure",
+      "Puzzle"
+    ],
+    "rating": "7.4",
+    "publisher": "EA Sports",
+    "developer": "Valve",
+    "playtime": "49",
+    "title": "Hearthstone",
+    "releaseYear": "2015",
+    "platforms": [
+      "PC",
+      "Switch"
+    ],
+    "tags": [
+      "Competitive",
+      "Ranked"
+    ]
+  },
+  {
+    "steamID": "190858",
+    "genres": [
+      "FPS",
+      "Shooter"
+    ],
+    "rating": "6.8",
+    "publisher": "Nintendo",
+    "developer": "Nintendo EPD",
+    "playtime": "91",
+    "title": "Diablo IV",
+    "releaseYear": "2014",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Fast-paced",
+      "Gore"
+    ]
+  },
+  {
+    "steamID": "460093",
+    "genres": [
+      "MMO",
+      "Open-World"
+    ],
+    "rating": "7.8",
+    "publisher": "Ubisoft",
+    "developer": "2K",
+    "playtime": "173",
+    "title": "Among Us",
+    "releaseYear": "2020",
+    "platforms": [
+      "Switch",
+      "Mobile"
+    ],
+    "tags": [
+      "Realistic",
+      "Simulation"
+    ]
+  },
+  {
+    "steamID": "569416",
+    "genres": [
+      "Fighting",
+      "Action"
+    ],
+    "rating": "8.5",
+    "publisher": "2K Sports",
+    "developer": "Santa Monica Studio",
+    "playtime": "156",
+    "title": "Slay the Spire",
+    "releaseYear": "2022",
+    "platforms": [
+      "PC",
+      "PlayStation"
+    ],
+    "tags": [
+      "Multiplayer",
+      "Online"
+    ]
+  },
+  {
+    "steamID": "476729",
+    "genres": [
+      "Simulation",
+      "Casual"
+    ],
+    "rating": "9.0",
+    "publisher": "Ubisoft",
+    "developer": "id Software",
+    "playtime": "57",
+    "title": "Celeste",
+    "releaseYear": "2024",
+    "platforms": [
+      "PC",
+      "Xbox"
+    ],
+    "tags": [
+      "Co-op",
+      "PvE"
+    ]
+  },
+  {
+    "steamID": "402201",
+    "genres": [
+      "Indie",
+      "Platformer"
+    ],
+    "rating": "9.5",
+    "publisher": "Sony",
+    "developer": "2K",
+    "playtime": "122",
+    "title": "Ori and the Blind Forest",
+    "releaseYear": "2021",
+    "platforms": [
+      "Switch",
+      "Mobile"
+    ],
+    "tags": [
+      "Relaxing",
+      "Casual"
+    ]
+  },
+  {
+    "steamID": "869163",
+    "genres": [
+      "Strategy",
+      "Tactical"
+    ],
+    "rating": "6.3",
+    "publisher": "EA Sports",
+    "developer": "id Software",
+    "playtime": "34",
+    "title": "Inside",
+    "releaseYear": "2022",
+    "platforms": [
+      "PC",
+      "Xbox"
+    ],
+    "tags": [
+      "Competitive",
+      "Ranked"
+    ]
+  },
+  {
+    "steamID": "141944",
+    "genres": [
+      "Strategy",
+      "Tactical"
+    ],
+    "rating": "6.1",
+    "publisher": "Sony",
+    "developer": "Santa Monica Studio",
+    "playtime": "91",
+    "title": "Limbo",
+    "releaseYear": "2021",
+    "platforms": [
+      "PC",
+      "PlayStation"
+    ],
+    "tags": [
+      "Retro",
+      "Pixel Graphics"
+    ]
+  },
+  {
+    "steamID": "245045",
+    "genres": [
+      "Simulation",
+      "Casual"
+    ],
+    "rating": "8.3",
+    "publisher": "Valve",
+    "developer": "2K",
+    "playtime": "141",
+    "title": "Spelunky 2",
+    "releaseYear": "2023",
+    "platforms": [
+      "PC",
+      "Switch"
+    ],
+    "tags": [
+      "Multiplayer",
+      "Online"
+    ]
+  },
+  {
+    "steamID": "520159",
+    "genres": [
+      "Strategy",
+      "Tactical"
+    ],
+    "rating": "7.7",
+    "publisher": "2K Sports",
+    "developer": "Rockstar North",
+    "playtime": "59",
+    "title": "Dead Cells",
+    "releaseYear": "2018",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Competitive",
+      "Ranked"
+    ]
+  },
+  {
+    "steamID": "323145",
+    "genres": [
+      "Racing",
+      "Arcade"
+    ],
+    "rating": "7.7",
+    "publisher": "Valve",
+    "developer": "Santa Monica Studio",
+    "playtime": "133",
+    "title": "HITMAN 3",
+    "releaseYear": "2019",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Exploration",
+      "Survival"
+    ]
+  },
+  {
+    "steamID": "688605",
+    "genres": [
+      "MMO",
+      "Open-World"
+    ],
+    "rating": "6.9",
+    "publisher": "Ubisoft",
+    "developer": "2K",
+    "playtime": "145",
+    "title": "Control",
+    "releaseYear": "2021",
+    "platforms": [
+      "PC",
+      "Switch"
+    ],
+    "tags": [
+      "Multiplayer",
+      "Online"
+    ]
+  },
+  {
+    "steamID": "871190",
+    "genres": [
+      "Sports",
+      "Multiplayer"
+    ],
+    "rating": "7.5",
+    "publisher": "Bethesda",
+    "developer": "Santa Monica Studio",
+    "playtime": "89",
+    "title": "The Forest",
+    "releaseYear": "2019",
+    "platforms": [
+      "PC",
+      "Switch"
+    ],
+    "tags": [
+      "Multiplayer",
+      "Online"
+    ]
+  },
+  {
+    "steamID": "377454",
+    "genres": [
+      "FPS",
+      "Shooter"
+    ],
+    "rating": "7.9",
+    "publisher": "Sony",
+    "developer": "Santa Monica Studio",
+    "playtime": "187",
+    "title": "Subnautica",
+    "releaseYear": "2016",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Realistic",
+      "Simulation"
+    ]
+  },
+  {
+    "steamID": "741800",
+    "genres": [
+      "MMO",
+      "Open-World"
+    ],
+    "rating": "8.7",
+    "publisher": "Nintendo",
+    "developer": "Valve",
+    "playtime": "37",
+    "title": "Phasmophobia",
+    "releaseYear": "2014",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Realistic",
+      "Simulation"
+    ]
+  },
+  {
+    "steamID": "305748",
+    "genres": [
+      "Strategy",
+      "Tactical"
+    ],
+    "rating": "9.3",
+    "publisher": "2K Sports",
+    "developer": "EA",
+    "playtime": "19",
+    "title": "Fall Guys",
+    "releaseYear": "2024",
+    "platforms": [
+      "PC",
+      "Switch"
+    ],
+    "tags": [
+      "Realistic",
+      "Simulation"
+    ]
+  },
+  {
+    "steamID": "549793",
+    "genres": [
+      "Simulation",
+      "Casual"
+    ],
+    "rating": "7.2",
+    "publisher": "Rockstar Games",
+    "developer": "Infinity Ward",
+    "playtime": "78",
+    "title": "Death Stranding",
+    "releaseYear": "2018",
+    "platforms": ["PC"],
+    "tags": [
+      "Co-op",
+      "PvE"
+    ]
+  },
+  {
+    "steamID": "490761",
+    "genres": [
+      "Sports",
+      "Multiplayer"
+    ],
+    "rating": "9.3",
+    "publisher": "2K Sports",
+    "developer": "Rockstar North",
+    "playtime": "48",
+    "title": "Stray",
+    "releaseYear": "2016",
+    "platforms": ["PC"],
+    "tags": [
+      "Multiplayer",
+      "Online"
+    ]
+  },
+  {
+    "steamID": "766274",
+    "genres": [
+      "FPS",
+      "Shooter"
+    ],
+    "rating": "8.9",
+    "publisher": "Valve",
+    "developer": "Nintendo EPD",
+    "playtime": "136",
+    "title": "Returnal",
+    "releaseYear": "2021",
+    "platforms": [
+      "PC",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Retro",
+      "Pixel Graphics"
+    ]
+  },
+  {
+    "steamID": "712804",
+    "genres": [
+      "Racing",
+      "Arcade"
+    ],
+    "rating": "8.3",
+    "publisher": "Nintendo",
+    "developer": "Santa Monica Studio",
+    "playtime": "131",
+    "title": "Sea of Thieves",
+    "releaseYear": "2023",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Story-rich",
+      "Fantasy"
+    ]
+  },
+  {
+    "steamID": "968243",
+    "genres": [
+      "Fighting",
+      "Action"
+    ],
+    "rating": "8.6",
+    "publisher": "2K Sports",
+    "developer": "Nintendo EPD",
+    "playtime": "145",
+    "title": "Ghost of Tsushima",
+    "releaseYear": "2019",
+    "platforms": [
+      "PC",
+      "PlayStation"
+    ],
+    "tags": [
+      "Retro",
+      "Pixel Graphics"
+    ]
+  },
+  {
+    "steamID": "926637",
+    "genres": [
+      "MMO",
+      "Open-World"
+    ],
+    "rating": "7.8",
+    "publisher": "Valve",
+    "developer": "Nintendo EPD",
+    "playtime": "41",
+    "title": "Tunic",
+    "releaseYear": "2019",
+    "platforms": [
+      "Switch",
+      "Mobile"
+    ],
+    "tags": [
+      "Competitive",
+      "Ranked"
+    ]
+  },
+  {
+    "steamID": "456146",
+    "genres": [
+      "Simulation",
+      "Casual"
+    ],
+    "rating": "6.0",
+    "publisher": "2K Sports",
+    "developer": "2K",
+    "playtime": "60",
+    "title": "No Man's Sky",
+    "releaseYear": "2020",
+    "platforms": ["PC"],
+    "tags": [
+      "Story-rich",
+      "Fantasy"
+    ]
+  },
+  {
+    "steamID": "251818",
+    "genres": [
+      "Indie",
+      "Platformer"
+    ],
+    "rating": "9.5",
+    "publisher": "2K Sports",
+    "developer": "id Software",
+    "playtime": "15",
+    "title": "Monster Hunter: World",
+    "releaseYear": "2024",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Exploration",
+      "Survival"
+    ]
+  },
+  {
+    "steamID": "188952",
+    "genres": [
+      "Strategy",
+      "Tactical"
+    ],
+    "rating": "8.3",
+    "publisher": "2K Sports",
+    "developer": "Rockstar North",
+    "playtime": "159",
+    "title": "It Takes Two",
+    "releaseYear": "2024",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Co-op",
+      "PvE"
+    ]
+  },
+  {
+    "steamID": "842980",
+    "genres": [
+      "Sports",
+      "Multiplayer"
+    ],
+    "rating": "7.9",
+    "publisher": "Valve",
+    "developer": "Valve",
+    "playtime": "95",
+    "title": "A Way Out",
+    "releaseYear": "2020",
+    "platforms": ["PC"],
+    "tags": [
+      "Co-op",
+      "PvE"
+    ]
+  },
+  {
+    "steamID": "187486",
+    "genres": [
+      "RPG",
+      "Action"
+    ],
+    "rating": "7.7",
+    "publisher": "Sony",
+    "developer": "Infinity Ward",
+    "playtime": "48",
+    "title": "Super Mario Odyssey",
+    "releaseYear": "2023",
+    "platforms": [
+      "PC",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Fast-paced",
+      "Gore"
+    ]
+  },
+  {
+    "steamID": "167247",
+    "genres": [
+      "Sports",
+      "Multiplayer"
+    ],
+    "rating": "7.2",
+    "publisher": "Bethesda",
+    "developer": "id Software",
+    "playtime": "85",
+    "title": "Zelda: Breath of the Wild",
+    "releaseYear": "2022",
+    "platforms": [
+      "PC",
+      "PlayStation"
+    ],
+    "tags": [
+      "Exploration",
+      "Survival"
+    ]
+  },
+  {
+    "steamID": "232511",
+    "genres": [
+      "Simulation",
+      "Casual"
+    ],
+    "rating": "9.4",
+    "publisher": "Activision",
+    "developer": "Valve",
+    "playtime": "6",
+    "title": "Metroid Dread",
+    "releaseYear": "2015",
+    "platforms": [
+      "PC",
+      "PlayStation"
+    ],
+    "tags": [
+      "Co-op",
+      "PvE"
+    ]
+  },
+  {
+    "steamID": "937815",
+    "genres": [
+      "Racing",
+      "Arcade"
+    ],
+    "rating": "6.0",
+    "publisher": "Rockstar Games",
+    "developer": "Infinity Ward",
+    "playtime": "117",
+    "title": "Cuphead",
+    "releaseYear": "2014",
+    "platforms": [
+      "Switch",
+      "Mobile"
+    ],
+    "tags": [
+      "Competitive",
+      "Ranked"
+    ]
+  },
+  {
+    "steamID": "499408",
+    "genres": [
+      "RPG",
+      "Action"
+    ],
+    "rating": "7.4",
+    "publisher": "Ubisoft",
+    "developer": "EA",
+    "playtime": "57",
+    "title": "Bayonetta 3",
+    "releaseYear": "2018",
+    "platforms": ["PC"],
+    "tags": [
+      "Fast-paced",
+      "Gore"
+    ]
+  },
+  {
+    "steamID": "648715",
+    "genres": [
+      "Sports",
+      "Multiplayer"
+    ],
+    "rating": "8.3",
+    "publisher": "Nintendo",
+    "developer": "id Software",
+    "playtime": "34",
+    "title": "Nioh 2",
+    "releaseYear": "2015",
+    "platforms": [
+      "PC",
+      "Switch"
+    ],
+    "tags": [
+      "Multiplayer",
+      "Online"
+    ]
+  },
+  {
+    "steamID": "508357",
+    "genres": [
+      "Racing",
+      "Arcade"
+    ],
+    "rating": "7.8",
+    "publisher": "Ubisoft",
+    "developer": "2K",
+    "playtime": "72",
+    "title": "Yakuza 0",
+    "releaseYear": "2015",
+    "platforms": [
+      "PC",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Competitive",
+      "Ranked"
+    ]
+  },
+  {
+    "steamID": "855097",
+    "genres": [
+      "Racing",
+      "Arcade"
+    ],
+    "rating": "8.2",
+    "publisher": "Sony",
+    "developer": "Santa Monica Studio",
+    "playtime": "165",
+    "title": "Persona 5 Royal",
+    "releaseYear": "2016",
+    "platforms": ["PC"],
+    "tags": [
+      "Realistic",
+      "Simulation"
+    ]
+  },
+  {
+    "steamID": "364449",
+    "genres": [
+      "MMO",
+      "Open-World"
+    ],
+    "rating": "8.9",
+    "publisher": "Nintendo",
+    "developer": "Ubisoft Montreal",
+    "playtime": "109",
+    "title": "Fire Emblem: Three Houses",
+    "releaseYear": "2020",
+    "platforms": [
+      "PC",
+      "PlayStation"
+    ],
+    "tags": [
+      "Retro",
+      "Pixel Graphics"
+    ]
+  },
+  {
+    "steamID": "800164",
+    "genres": [
+      "RPG",
+      "Action"
+    ],
+    "rating": "6.1",
+    "publisher": "Ubisoft",
+    "developer": "Santa Monica Studio",
+    "playtime": "176",
+    "title": "Horizon Zero Dawn",
+    "releaseYear": "2022",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Relaxing",
+      "Casual"
+    ]
+  },
+  {
+    "steamID": "185060",
+    "genres": [
+      "Racing",
+      "Arcade"
+    ],
+    "rating": "8.9",
+    "publisher": "Bethesda",
+    "developer": "Nintendo EPD",
+    "playtime": "90",
+    "title": "The Last of Us Part I",
+    "releaseYear": "2018",
+    "platforms": [
+      "Switch",
+      "Mobile"
+    ],
+    "tags": [
+      "Fast-paced",
+      "Gore"
+    ]
+  },
+  {
+    "steamID": "544558",
+    "genres": [
+      "Indie",
+      "Platformer"
+    ],
+    "rating": "8.7",
+    "publisher": "Ubisoft",
+    "developer": "Infinity Ward",
+    "playtime": "169",
+    "title": "Gran Turismo 7",
+    "releaseYear": "2015",
+    "platforms": ["PC"],
+    "tags": [
+      "Co-op",
+      "PvE"
+    ]
+  },
+  {
+    "steamID": "985628",
+    "genres": [
+      "Racing",
+      "Arcade"
+    ],
+    "rating": "8.9",
+    "publisher": "Ubisoft",
+    "developer": "Infinity Ward",
+    "playtime": "199",
+    "title": "Need for Speed Heat",
+    "releaseYear": "2017",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Competitive",
+      "Ranked"
+    ]
+  },
+  {
+    "steamID": "740475",
+    "genres": [
+      "Strategy",
+      "Tactical"
+    ],
+    "rating": "8.0",
+    "publisher": "Ubisoft",
+    "developer": "EA",
+    "playtime": "124",
+    "title": "Tony Hawk's Pro Skater 1+2",
+    "releaseYear": "2021",
+    "platforms": ["PC"],
+    "tags": [
+      "Co-op",
+      "PvE"
+    ]
+  },
+  {
+    "steamID": "140726",
+    "genres": [
+      "Fighting",
+      "Action"
+    ],
+    "rating": "9.4",
+    "publisher": "Activision",
+    "developer": "EA",
+    "playtime": "192",
+    "title": "Skater XL",
+    "releaseYear": "2020",
+    "platforms": [
+      "PC",
+      "Xbox"
+    ],
+    "tags": [
+      "Competitive",
+      "Ranked"
+    ]
+  },
+  {
+    "steamID": "442577",
+    "genres": [
+      "Racing",
+      "Arcade"
+    ],
+    "rating": "6.5",
+    "publisher": "Ubisoft",
+    "developer": "Infinity Ward",
+    "playtime": "83",
+    "title": "Madden NFL 24",
+    "releaseYear": "2015",
+    "platforms": [
+      "PC",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Co-op",
+      "PvE"
+    ]
+  },
+  {
+    "steamID": "234116",
+    "genres": [
+      "Racing",
+      "Arcade"
+    ],
+    "rating": "9.7",
+    "publisher": "EA Sports",
+    "developer": "Nintendo EPD",
+    "playtime": "54",
+    "title": "MLB The Show 24",
+    "releaseYear": "2023",
+    "platforms": [
+      "Switch",
+      "Mobile"
+    ],
+    "tags": [
+      "Exploration",
+      "Survival"
+    ]
+  },
+  {
+    "steamID": "971962",
+    "genres": [
+      "Sports",
+      "Multiplayer"
+    ],
+    "rating": "9.5",
+    "publisher": "Sony",
+    "developer": "2K",
+    "playtime": "151",
+    "title": "WWE 2K24",
+    "releaseYear": "2022",
+    "platforms": [
+      "Mobile",
+      "PC"
+    ],
+    "tags": [
+      "Exploration",
+      "Survival"
+    ]
+  },
+  {
+    "steamID": "123456",
+    "genres": [
+      "Action",
+      "Adventure"
+    ],
+    "rating": "8.7",
+    "publisher": "Bethesda Softworks",
+    "developer": "Bethesda Game Studios",
+    "playtime": "120",
+    "title": "The Elder Scrolls V: Skyrim",
+    "releaseYear": "2011",
+    "platforms": [
+      "PC",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Open World",
+      "RPG"
+    ]
+  },
+  {
+    "steamID": "789012",
+    "genres": [
+      "Strategy",
+      "Simulation"
+    ],
+    "rating": "9.1",
+    "publisher": "Paradox Interactive",
+    "developer": "Paradox Development Studio",
+    "playtime": "200",
+    "title": "Crusader Kings III",
+    "releaseYear": "2020",
+    "platforms": ["PC"],
+    "tags": [
+      "Grand Strategy",
+      "Medieval"
+    ]
+  },
+  {
+    "steamID": "901234",
+    "genres": [
+      "Survival",
+      "Horror"
+    ],
+    "rating": "8.3",
+    "publisher": "Klei Entertainment",
+    "developer": "Klei Entertainment",
+    "playtime": "60",
+    "title": "Don't Starve",
+    "releaseYear": "2013",
+    "platforms": [
+      "PC",
+      "PlayStation",
+      "Xbox"
+    ],
+    "tags": [
+      "Survival",
       "Indie"
     ]
   }
