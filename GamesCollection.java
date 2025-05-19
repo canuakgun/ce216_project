@@ -13,7 +13,7 @@ public class GamesCollection {
     }
 
     public GamesCollection(List<Game> collection) {
-        this.collection = new ArrayList<>(collection); // Defensive copy
+        this.collection = new ArrayList<>(collection);
     }
 
     // Basic operations
@@ -44,7 +44,6 @@ public class GamesCollection {
         return collection.isEmpty();
     }
 
-    // Search operations
     public int indexOfGame(String title) {
         for (int i = 0; i < collection.size(); i++) {
             if (collection.get(i).getGameTitle().equalsIgnoreCase(title)) {
@@ -101,12 +100,10 @@ public class GamesCollection {
                     .collect(Collectors.toList());
         }
 
-    // Getter with defensive copy
     public List<Game> getAllGames() {
         return new ArrayList<>(collection);
     }
 
-    // Utility methods
     @Override
     public String toString() {
         return "GamesCollection{" +
