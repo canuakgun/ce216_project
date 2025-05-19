@@ -160,3 +160,14 @@ Expected: Valid genre names
  Text output: "Warning: Empty genre list for game: [Game Title]"
  Severity: Low (Filtering issues)
 
+Import JSON Bug
+Expected: User selects a valid JSON file, and game data is successfully loaded into the application.
+What happened: Clicking the Import button either does nothing or results in an error when attempting to load a valid JSON file.
+Text output: "Error: Failed to load JSON file or invalid format"
+Severity: Medium (Prevents user from loading saved game data)
+
+Export JSON Bug
+Expected: Clicking the Export button should trigger the download of a correctly formatted JSON file containing the current game data.
+What happened: No file is downloaded, or the exported file is empty or malformed.
+Text output: "Error: Could not save file" or no message displayed
+Severity: Medium (Prevents user from backing up or transferring game data)
