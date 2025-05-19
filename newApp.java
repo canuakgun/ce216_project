@@ -7,15 +7,19 @@ import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Glow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,6 +27,7 @@ import javafx.stage.FileChooser;
 import javafx.util.converter.LocalDateStringConverter;
 
 import java.io.File;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -80,11 +85,11 @@ public class newApp extends Application {
         root.setTop(title);
 
         // Left Panel - Filters (wrapped in ScrollPane)
-        VBox leftPanelContent = createLeftPanel(); // Keep your existing VBox creation
+        VBox leftPanelContent = createLeftPanel(); 
         ScrollPane leftScrollPane = new ScrollPane(leftPanelContent);
-        leftScrollPane.setFitToWidth(true); // Content fills available width
-        leftScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER); // No horizontal scroll
-        leftScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); // Vertical when needed
+        leftScrollPane.setFitToWidth(true); 
+        leftScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        leftScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED); 
         leftScrollPane.setStyle(
                 "-fx-background-color: #f0f0f0; " +
                         "-fx-border-color: #cccccc; " +
@@ -103,7 +108,7 @@ public class newApp extends Application {
         bottomPanel.setPadding(new Insets(10));
         bottomPanel.setStyle("-fx-alignment: bottom-left;");
 
-        // Add Import and Export buttons to bottom panel
+        // Adding Import and Export buttons to bottom panel
         Button importButton = new Button("Import JSON");
         importButton.setOnAction(e -> importGames(primaryStage));
 
@@ -181,7 +186,6 @@ public class newApp extends Application {
 
         Hyperlink moreInfoLink = createGoogleSearchLink(game.getGameTitle());
 
-        // Add all components to root
         root.getChildren().addAll(
                 titleLabel,
                 ratingBox,
@@ -228,22 +232,119 @@ public class newApp extends Application {
         Alert helpAlert = new Alert(Alert.AlertType.INFORMATION);
         helpAlert.setTitle("Help");
         helpAlert.setHeaderText("How to Use the Game Catalog");
-        helpAlert.setContentText(
-                "1. Use the filters on the left to narrow down the game list.\n" +
-                        "2. Use the search bar to find games by title.\n" +
-                        "3. Sort games by Title, Release Date, or Rating using the dropdown.\n" +
-                        "4. Add new games using the 'Add Game' button.\n" +
-                        "5. Delete selected games using the 'Delete Game' button."
+
+        // Create the main content VBox
+        VBox contentBox = new VBox(15);
+        contentBox.setPadding(new Insets(15));
+        contentBox.setAlignment(Pos.TOP_LEFT);
+
+        Label helpText = new Label(
+                "1. Use the filters on the left to narrow down the game list. You can select multiple filters by holding Ctrl and clicking each filter. To select a range, hold Shift and click between two filters.\n" +
+                        "2. Use the search bar to find games,genres,tags everything ! The search is case-insensitive and updates results as you type.\n" +
+                        "3. Sort games by Title, Release Date, or Rating using the dropdown menu. Sorting is applied instantly based on the selected option (Ascending or Descending).\n" +
+                        "4. Add new games using the 'Add Game' button. This opens a form where you can enter the game's title, release date, genre, rating, and other details.\n" +
+                        "5. Edit games using the 'Edit Game' button. This opens a form where you can change the game's title, release date, genre, rating, and other details.\n" +
+                        "6. Import games from a JSON file using the 'Import' button. The imported data will be added to the current list.\n" +
+                        "7. Export selected games using the 'Export' button. You can select multiple games to include in the exported JSON file.\n\n" +
+                        "8. Delete selected games using the 'Delete Game' button. To select multiple games, hold Ctrl and click on each game. A confirmation prompt will appear before deletion.\n\n" +
+                        "Click the buttons below to view detailed images in full screen."
         );
+        helpText.setStyle("-fx-font-size: 14px;");
+        helpText.setWrapText(true);
+
+        // Create ScrollPane for the text
+        ScrollPane textScrollPane = new ScrollPane(helpText);
+        textScrollPane.setFitToWidth(true);
+        textScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        textScrollPane.setPrefViewportHeight(232);
+        textScrollPane.setMaxHeight(Double.MAX_VALUE);
+
+        // Create buttons to open images in new windows
+        Button showImage1Btn = new Button("General");
+        Button showImage2Btn = new Button("Adding a Game");
+
+        String buttonStyle = "-fx-font-size: 14px; -fx-padding: 8px 16px;";
+        showImage1Btn.setStyle(buttonStyle);
+        showImage2Btn.setStyle(buttonStyle);
+
+        // Set button actions
+        showImage1Btn.setOnAction(e -> showImageInNewWindow("/help1.png", "Add Game Form"));
+        showImage2Btn.setOnAction(e -> showImageInNewWindow("/help2.png", "Help Image"));
+
+        contentBox.getChildren().addAll(
+                textScrollPane,
+                new VBox(10, showImage1Btn, showImage2Btn)
+        );
+
+        // Set the dialog content
+        helpAlert.getDialogPane().setContent(contentBox);
+        helpAlert.getDialogPane().setPrefSize(600, 400); 
+        helpAlert.setResizable(true);
+
         helpAlert.showAndWait();
     }
 
+    private void showImageInNewWindow(String imagePath, String title) {
+        try {
+            URL imageUrl = getClass().getResource(imagePath);
+            if (imageUrl == null) {
+                throw new IllegalArgumentException("Image not found: " + imagePath);
+            }
+
+            // Create new stage for the image
+            Stage imageStage = new Stage();
+            imageStage.setTitle(title);
+
+            // Load the image
+            Image image = new Image(imageUrl.toString());
+            ImageView imageView = new ImageView(image);
+            imageView.setPreserveRatio(true);
+
+            // Create a StackPane to center the image
+            StackPane root = new StackPane(imageView);
+            root.setPadding(new Insets(10));
+
+            // Create scene and set it to the stage
+            Scene scene = new Scene(root);
+            imageStage.setScene(scene);
+
+            // Make the window maximized
+            imageStage.setMaximized(true);
+
+            // Calculate ideal size (90% of screen dimensions)
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            double width = screenBounds.getWidth() * 0.9;
+            double height = screenBounds.getHeight() * 0.9;
+
+            // Set initial size
+            imageStage.setWidth(width);
+            imageStage.setHeight(height);
+
+            // Set minimum size
+            imageStage.setMinWidth(800);
+            imageStage.setMinHeight(600);
+
+            imageStage.centerOnScreen();
+
+            imageView.fitWidthProperty().bind(root.widthProperty().subtract(20));
+            imageView.fitHeightProperty().bind(root.heightProperty().subtract(20));
+
+            imageStage.show();
+
+        } catch (Exception e) {
+            System.err.println("Error loading image: " + e.getMessage());
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error");
+            errorAlert.setHeaderText("Could not load image");
+            errorAlert.setContentText("The image could not be loaded: " + imagePath);
+            errorAlert.showAndWait();
+        }
+    }
     private VBox createLeftPanel() {
         VBox leftPanel = new VBox(15);
         leftPanel.setPadding(new Insets(15));
         leftPanel.setPrefWidth(280);
 
-        // Update all filter lists to use dynamic data from the handler
         genresList.setItems(FXCollections.observableArrayList(handler.getAllGenres()));
         yearList.setItems(FXCollections.observableArrayList(handler.getAllReleaseYears()));
         publisherList.setItems(FXCollections.observableArrayList(handler.getAllPublishers()));
@@ -256,7 +357,7 @@ public class newApp extends Application {
                 "🎮 Genres",
                 genresList.getItems(),
                 genresList,
-                () -> {} // Empty callback since we're using selection listeners
+                () -> {} 
         );
 
         // --- Filter by Year ---
@@ -264,7 +365,7 @@ public class newApp extends Application {
                 "📅 Year",
                 yearList.getItems(),
                 yearList,
-                () -> {} // Empty callback
+                () -> {} 
         );
 
         // --- Publishers ---
@@ -272,7 +373,7 @@ public class newApp extends Application {
                 "🏢 Publishers",
                 publisherList.getItems(),
                 publisherList,
-                () -> {} // Empty callback
+                () -> {} 
         );
 
         // --- Tags ---
@@ -288,7 +389,7 @@ public class newApp extends Application {
                 "👨 Developers",
                 devList.getItems(),
                 devList,
-                () -> {} // Empty callback
+                () -> {} 
         );
 
         // --- Platforms ---
@@ -296,7 +397,7 @@ public class newApp extends Application {
                 "🖥 Platforms",
                 platformList.getItems(),
                 platformList,
-                () -> {} // Empty callback
+                () -> {} 
         );
 
         leftPanel.getChildren().addAll(
@@ -307,10 +408,9 @@ public class newApp extends Application {
     }
     private Button createResetAllButton() {
         Button resetAllBtn = new Button("Reset All Filters");
-        resetAllBtn.setMaxWidth(Double.MAX_VALUE); // Make button full width
+        resetAllBtn.setMaxWidth(Double.MAX_VALUE); 
 
         resetAllBtn.setOnAction(e -> {
-            // Clear selections in all filter lists
             genresList.getSelectionModel().clearSelection();
             yearList.getSelectionModel().clearSelection();
             publisherList.getSelectionModel().clearSelection();
@@ -318,7 +418,6 @@ public class newApp extends Application {
             devList.getSelectionModel().clearSelection();
             platformList.getSelectionModel().clearSelection();
 
-            // Apply the filters (which will now show all games since no filters are selected)
             applyAllFilters();
         });
 
@@ -338,7 +437,7 @@ public class newApp extends Application {
         Button resetBtn = new Button("Reset");
         resetBtn.setOnAction(e -> {
             listView.getSelectionModel().clearSelection();
-            applyAllFilters(); // Use the unified filter method
+            applyAllFilters(); 
         });
 
         VBox content = new VBox(8, listView, resetBtn);
@@ -406,15 +505,14 @@ public class newApp extends Application {
 
         try {
             double rating = Double.parseDouble(ratingStr);
-            boolean isTenScale = rating > 5; // Assume ratings >5 are on 10-point scale
+            boolean isTenScale = rating > 5; 
 
-            // Normalize to 5-point scale for display
+            //  5-point scale for display
             double displayRating = rating;
 
             // Create star container
             HBox starsBox = new HBox(2);
 
-            // Determine star rating (using if-else instead of loops)
             if (displayRating <= 10 && displayRating > 8) {
                 addStars(starsBox, 5, 0); // ★★★★★
             } else if (displayRating <= 8 && displayRating > 6) {
@@ -429,11 +527,9 @@ public class newApp extends Application {
                 addStars(starsBox, 0, 5); // ☆☆☆☆☆
             }
 
-            // Add numeric rating
             Label numericRating = new Label(String.format("%.1f/10", rating));
             numericRating.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
 
-            // Add rating source (optional)
             Label sourceLabel = new Label("User Rating");
             sourceLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666666;");
 
@@ -553,11 +649,9 @@ public class newApp extends Application {
 
         moreInfoLink.setOnAction(e -> {
             try {
-                // Encode the game title for URL
                 String encodedQuery = URLEncoder.encode(gameTitle, StandardCharsets.UTF_8);
                 String googleSearchUrl = "https://www.google.com/search?q=" + encodedQuery + "+game";
 
-                // Open the URL in the default browser
                 HostServices hostServices = getHostServices();
                 hostServices.showDocument(googleSearchUrl);
             } catch (Exception ex) {
@@ -568,8 +662,7 @@ public class newApp extends Application {
         return moreInfoLink;
     }
     private void initializeSampleData() {
-        // The handler will now automatically load the data
-        // Print all games to verify loading
+     
         System.out.println("Successfully loaded " + handler.getCollectionSize() + " games:");
         handler.printAllGames();
         updateFilterLists();
@@ -578,7 +671,6 @@ public class newApp extends Application {
         Platform.runLater(this::resetAllFilters);
     }
     private void updateFilterLists() {
-        // Update genres list
         ObservableList<String> allGenres = FXCollections.observableArrayList();
         for (Game game : handler.getAllGames()) {
             for (String genre : game.getGameGenre()) {
@@ -589,7 +681,6 @@ public class newApp extends Application {
         }
         genresList.setItems(allGenres);
 
-        // Update developers list
         ObservableList<String> allDevs = FXCollections.observableArrayList();
         for (Game game : handler.getAllGames()) {
             String dev = game.getGameDeveloper();
@@ -599,7 +690,6 @@ public class newApp extends Application {
         }
         devList.setItems(allDevs);
 
-        // Update tags list
         ObservableList<String> allTags = FXCollections.observableArrayList();
         for (Game game : handler.getAllGames()) {
             for (String tag : game.getGameTags()) {
@@ -612,7 +702,6 @@ public class newApp extends Application {
     }
 
     private void refreshGameList() {
-        // Store current filter selections
         ObservableList<String> selectedGenres = genresList.getSelectionModel().getSelectedItems();
         ObservableList<String> selectedYears = yearList.getSelectionModel().getSelectedItems();
         ObservableList<String> selectedPublishers = publisherList.getSelectionModel().getSelectedItems();
@@ -733,7 +822,6 @@ public class newApp extends Application {
 
         outerLoop:
         for (Game game : handler.getAllGames()) {
-            // Check genre filter (OR within category)
             if (!selectedGenres.isEmpty()) {
                 boolean genreMatch = false;
                 for (String genre : selectedGenres) {
@@ -745,7 +833,6 @@ public class newApp extends Application {
                 if (!genreMatch) continue outerLoop;
             }
 
-            // Check year filter (OR within category)
             if (!selectedYears.isEmpty()) {
                 boolean yearMatch = false;
                 for (String year : selectedYears) {
@@ -757,7 +844,6 @@ public class newApp extends Application {
                 if (!yearMatch) continue outerLoop;
             }
 
-            // Check publisher filter (OR within category)
             if (!selectedPublishers.isEmpty()) {
                 boolean publisherMatch = false;
                 for (String publisher : selectedPublishers) {
@@ -769,7 +855,6 @@ public class newApp extends Application {
                 if (!publisherMatch) continue outerLoop;
             }
 
-            // Check developer filter (OR within category)
             if (!selectedDevelopers.isEmpty()) {
                 boolean developerMatch = false;
                 for (String developer : selectedDevelopers) {
@@ -781,7 +866,6 @@ public class newApp extends Application {
                 if (!developerMatch) continue outerLoop;
             }
 
-            // Check tags filter (OR within category)
             if (!selectedTags.isEmpty()) {
                 boolean tagMatch = false;
                 for (String tag : selectedTags) {
@@ -793,7 +877,6 @@ public class newApp extends Application {
                 if (!tagMatch) continue outerLoop;
             }
 
-            // Check platform filter (OR within category)
             if (!selectedPlatforms.isEmpty()) {
                 boolean platformMatch = false;
                 for (String platform : selectedPlatforms) {
@@ -805,7 +888,7 @@ public class newApp extends Application {
                 if (!platformMatch) continue outerLoop;
             }
 
-            // If we get here, the game matches all active filters
+            // If we get here the game matches all active filters
             filteredGames.add(game);
         }
 
@@ -878,7 +961,6 @@ public class newApp extends Application {
         scrollPane.setPrefViewportHeight(500);
         scrollPane.setPrefViewportWidth(400);
 
-        // Create form fields
         TextField titleField = new TextField();
         TextField developerField = new TextField();
         TextField publisherField = new TextField();
@@ -922,15 +1004,12 @@ public class newApp extends Application {
         grid.add(new Label("Rating (0.0-10.0):"), 0, 9);
         grid.add(ratingField, 1, 9);
 
-        // Add OK and Cancel buttons
         dialog.getDialogPane().setContent(scrollPane);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
         dialog.initModality(Modality.APPLICATION_MODAL);
-        // Disable OK button initially
         Node okButton = dialog.getDialogPane().lookupButton(ButtonType.OK);
         okButton.setDisable(true);
 
-        // Add validation listeners
         addValidationListeners(okButton, titleField, steamIdField, releaseYearField,
                 playtimeField, ratingField);
 
@@ -966,7 +1045,6 @@ public class newApp extends Application {
 
         dialog.showAndWait().ifPresent(game -> {
             if (handler.addGame(game)) {
-                // Update filters with new game's properties
                 updateFiltersWithNewGame(game);
 
                 refreshGameList();
@@ -988,33 +1066,28 @@ public class newApp extends Application {
             }
         }
 
-        // Update developers list
         String dev = game.getGameDeveloper();
         if (!devList.getItems().contains(dev)) {
             devList.getItems().add(dev);
         }
 
-        // Update publishers list
         String publisher = game.getGamePublisher();
         if (!publisherList.getItems().contains(publisher)) {
             publisherList.getItems().add(publisher);
         }
 
-        // Update tags list
         for (String tag : game.getGameTags()) {
             if (!tagsList.getItems().contains(tag)) {
                 tagsList.getItems().add(tag);
             }
         }
 
-        // Update platforms list
         for (String platform : game.getGamePlatforms()) {
             if (!platformList.getItems().contains(platform)) {
                 platformList.getItems().add(platform);
             }
         }
 
-        // Update years list
         String year = game.getGameReleaseYear();
         if (!yearList.getItems().contains(year)) {
             yearList.getItems().add(year);
@@ -1026,7 +1099,6 @@ public class newApp extends Application {
         public PlatformSelector() {
             setSpacing(5);
 
-            // Create platform categories
             Map<String, List<String>> platformCategories = new LinkedHashMap<>();
             platformCategories.put("Consoles", Arrays.asList("Nintendo Switch", "Playstation", "Xbox"));
             platformCategories.put("PC", Arrays.asList("Steam", "Epic Games Store", "Microsoft Store"));
@@ -1235,10 +1307,8 @@ public class newApp extends Application {
         dialog.setResultConverter(buttonType -> {
             if (buttonType == ButtonType.OK) {
                 try {
-                    // Get selected platforms
                     List<String> selectedPlatforms = platformSelector.getSelectedPlatforms();
 
-                    // Get genres and tags
                     List<String> genres = Arrays.asList(genreField.getText().split("\\s*,\\s*"));
                     List<String> tags = Arrays.asList(tagsField.getText().split("\\s*,\\s*"));
                     String year2= String.valueOf(releaseYearField.getValue().getYear());
@@ -1274,14 +1344,14 @@ public class newApp extends Application {
 
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Game updated successfully!");
             } else {
-                // If adding fails, add back the original game
+                // If editing fails add back the original game
                 handler.addGame(selectedGame);
                 showAlert(Alert.AlertType.ERROR, "Error", "Failed to update game");
             }
         });
     }
-    private String calculateGameRating(Game game) {
-        // Placeholder - implement your actual rating logic
+    // For test uses only 
+    private String calculateGameRating(Game game) { 
         if (game.getGameTitle().contains("Zelda")) return "9.5";
         if (game.getGameTitle().contains("Elden")) return "9.0";
         return "9.2";
@@ -1299,23 +1369,22 @@ public class newApp extends Application {
         File file = fileChooser.showOpenDialog(primaryStage);
         if (file != null) {
             try {
-                List<Game> importedGames = handler.getJsonParser().readFromJsonFile(file.getAbsolutePath());
-                int addedCount = handler.addGamesFromList(importedGames);
-                refreshGameList();
-                resetAllFilters();
-                updateFilterLists();
-                for(Game list: importedGames){
-                    updateFiltersWithNewGame(list);
-                }
+                List<Game> importedGames = handler.importGamesFromFile(file.getAbsolutePath());
+                if (!importedGames.isEmpty()) {
+                    refreshGameList();
+                    resetAllFilters();
+                    updateFilterLists();
 
+                    for(Game game : importedGames) {
+                        updateFiltersWithNewGame(game);
+                    }
 
-                if (addedCount == 0) {
+                    showAlert(Alert.AlertType.INFORMATION, "Import Successful",
+                            "Successfully imported " + importedGames.size() + " game" +
+                                    (importedGames.size() > 1 ? "s" : "") + " from " + file.getName());
+                } else {
                     showAlert(Alert.AlertType.WARNING, "Import Warning",
                             "No new games were imported. All selected games are already in the list.");
-                } else {
-                    showAlert(Alert.AlertType.INFORMATION, "Import Successful",
-                            "Successfully imported " + addedCount + " new game" + (addedCount > 1 ? "s" : "") +
-                                    " from " + file.getName());
                 }
             } catch (Exception e) {
                 showAlert(Alert.AlertType.ERROR, "Import Error",
@@ -1324,11 +1393,8 @@ public class newApp extends Application {
         }
     }
 
-
     private void exportSelectedGames(Stage primaryStage) {
-        // Get all selected games
         ObservableList<Game> selectedGames = gamesList.getSelectionModel().getSelectedItems();
-
         if (selectedGames.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "No Selection", "Please select one or more games to export");
             return;
@@ -1337,14 +1403,12 @@ public class newApp extends Application {
         File file = fileChooser.showSaveDialog(primaryStage);
         if (file != null) {
             try {
-                boolean success = handler.getJsonParser().saveToJsonFile(file.getAbsolutePath(), selectedGames);
-
+                boolean success = handler.exportGamesToFile(file.getAbsolutePath(), selectedGames);
                 if (success) {
                     showAlert(Alert.AlertType.INFORMATION, "Export Successful",
                             "Exported " + selectedGames.size() + " games to " + file.getName());
                 } else {
-                    showAlert(Alert.AlertType.ERROR, "Export Error",
-                            "Failed to export games");
+                    showAlert(Alert.AlertType.ERROR, "Export Error", "Failed to export games");
                 }
             } catch (Exception e) {
                 showAlert(Alert.AlertType.ERROR, "Export Error",
@@ -1352,6 +1416,7 @@ public class newApp extends Application {
             }
         }
     }
+
     public static void main(String[] args) {
         launch(args);
     }
