@@ -30,9 +30,10 @@ public class Game {
         this.gameReleaseYear = gameReleaseYear;
         this.gamePlaytime = gamePlaytime;
         this.gameTags = gameTags;
-        this.gameRating = gameRating; // Initialize gameRating
+        this.gameRating = gameRating; 
 
     }
+
 
     public void printGameTitle() {
         System.out.println("Game Title: " + getGameTitle());
@@ -41,6 +42,7 @@ public class Game {
     public String getGameTitle() {
         return gameTitle;
     }
+
 
     public void setGameTitle(String gameTitle) {
         this.gameTitle = gameTitle;
@@ -62,12 +64,10 @@ public class Game {
         this.gamePublisher = gamePublisher;
     }
 
-    // Getter for gameRating
     public String getGameRating() {
         return gameRating;
     }
 
-    // Setter for gameRating
     public void setGameRating(String gameRating) {
         this.gameRating = gameRating;
     }
@@ -131,5 +131,7 @@ public class Game {
     public String getPublisher() {
         return gamePublisher;
     }
+
+
 }
 
