@@ -12,61 +12,46 @@ import java.util.stream.Collectors;
 public class Handler {
     private GamesCollection collection;
     private JSONParser jsonParser;
-    private String jsonFilePath;
 
     public Handler() {
         this.collection = new GamesCollection();
         this.jsonParser = new JSONParser();
-        this.jsonFilePath = "List.json"; // Will be in the working directory
-
-        // Try to load from JAR resources first
-       loadExternalFile();
+        loadExternalFile();
     }
+
     private void loadExternalFile() {
-          try {
-        // First try to load from working directory
-        File externalFile = new File(jsonFilePath);
-        if (externalFile.exists()) {
-            List<Game> games = jsonParser.readFromJsonFile(jsonFilePath);
+        try {
+            // Load from the AppData file
+            List<Game> games = jsonParser.readFromJsonFile();
             if (games != null && !games.isEmpty()) {
                 collection.addAll(games);
             }
-        } else {
-            // If no external file exists, try to load from JAR as fallback
-            InputStream is = getClass().getResourceAsStream("/" + jsonFilePath);
-            if (is != null) {
-                String text = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-                JSONArray arr = new JSONArray(text);
-                List<Game> games = new ArrayList<>();
-                for (int i = 0; i < arr.length(); i++) {
-                    Game game = jsonParser.parseGameObject(arr.getJSONObject(i));
-                    if (game != null) {
-                        games.add(game);
-                    }
-                }
-                collection.addAll(games);
-                is.close();
-            }
-            // Create the external file for future use
-            saveCollectionToFile();
+        } catch (Exception e) {
+            System.err.println("Error loading games from AppData: " + e.getMessage());
         }
-    } catch (Exception e) {
-        System.err.println("Error loading games: " + e.getMessage());
     }
-}
 
-    // Initialization methods
     public void loadGamesFromJson(String filePath) {
-        List<Game> games = jsonParser.readFromJsonFile(filePath);
-        collection.addAll(games);
+        try {
+            List<Game> games = jsonParser.readFromJsonFile(filePath);
+            if (games != null && !games.isEmpty()) {
+                collection.addAll(games);
+                saveCollectionToFile(); // Save to AppData after loading from custom path
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading games from file: " + e.getMessage());
+        }
     }
 
-    // Add this new method
     private boolean saveCollectionToFile() {
-        return jsonParser.saveToJsonFile(jsonFilePath, collection.getAllGames());
+        try {
+            return jsonParser.saveToJsonFile(collection.getAllGames());
+        } catch (Exception e) {
+            System.err.println("Error saving to AppData: " + e.getMessage());
+            return false;
+        }
     }
 
-    // Basic operations
     public boolean addGame(Game game) {
         if (game == null) return false;
 
@@ -94,7 +79,6 @@ public class Handler {
         saveCollectionToFile();
     }
 
-    // Search operations
     public Game findGameByTitle(String title) {
         return collection.getGame(title);
     }
@@ -112,7 +96,6 @@ public class Handler {
         List<Game> uniqueGames = new ArrayList<>();
 
         for (Game newGame : games) {
-            // Skip null games
             if (newGame == null) {
                 System.out.println("Skipping null game in import list");
                 continue;
@@ -120,9 +103,7 @@ public class Handler {
 
             boolean isDuplicate = collection.getAllGames().stream()
                     .anyMatch(existing ->
-                            // Match by title (case-insensitive)
                             existing.getGameTitle().equalsIgnoreCase(newGame.getGameTitle()) ||
-                                    // OR match by SteamID (if both exist)
                                     (newGame.getGameSteamID() != null &&
                                             !newGame.getGameSteamID().isEmpty() &&
                                             newGame.getGameSteamID().equals(existing.getGameSteamID()))
@@ -134,8 +115,7 @@ public class Handler {
                 System.out.println("Adding new game: " + newGame.getGameTitle());
             } else {
                 System.out.println("Skipping duplicate game - Title: " + newGame.getGameTitle() +
-                        (newGame.getGameSteamID() != null ?
-                                ", SteamID: " + newGame.getGameSteamID() : ""));
+                        (newGame.getGameSteamID() != null ? ", SteamID: " + newGame.getGameSteamID() : ""));
             }
         }
 
@@ -150,7 +130,7 @@ public class Handler {
         return addedCount;
     }
 
-    // Filtering operations
+    // Filtering operations (keep existing implementations)
     public List<Game> filterByDeveloper(String developer) {
         return collection.getGamesByDeveloper(developer);
     }
@@ -167,7 +147,10 @@ public class Handler {
         return collection.getGamesByPlatform(platform);
     }
 
-    public List<Game> filterByYear(String year) { return collection.getGamesByYear((year));}
+    public List<Game> filterByYear(String year) {
+        return collection.getGamesByYear(year);
+    }
+
     // Collection information
     public int getCollectionSize() {
         return collection.size();
@@ -177,7 +160,6 @@ public class Handler {
         return collection.isEmpty();
     }
 
-    // Display methods
     public void printAllGames() {
         if (collection.isEmpty()) {
             System.out.println("The collection is empty.");
@@ -207,49 +189,17 @@ public class Handler {
     }
 
     public List<Game> getAllGames() {
-        if (collection != null) {
-            return collection.getAllGames();
-        }
-        return new ArrayList<>(); // Return empty list if collection is null
+        return collection != null ? collection.getAllGames() : new ArrayList<>();
     }
 
     public void refreshData() {
-        // Clear the current collection
         collection.clear();
-
-        // Try to load from external file first
-        File externalFile = new File(jsonFilePath);
-        if (externalFile.exists()) {
-            List<Game> games = jsonParser.readFromJsonFile(jsonFilePath);
-            if (games != null && !games.isEmpty()) {
-                collection.addAll(games);
-                return; // Successfully loaded from external file
-            }
-        }
-
-        // Fallback to loading from JAR resources if external file doesn't exist or is empty
-        try (InputStream is = getClass().getResourceAsStream("/" + jsonFilePath)) {
-            if (is != null) {
-                String text = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-                JSONArray arr = new JSONArray(text);
-                List<Game> games = new ArrayList<>();
-
-                for (int i = 0; i < arr.length(); i++) {
-                    Game game = jsonParser.parseGameObject(arr.getJSONObject(i));
-                    if (game != null) {
-                        games.add(game);
-                    }
-                }
-
-                collection.addAll(games);
-
-                // Create/update the external file for future use
-                saveCollectionToFile();
-            }
-        } catch (Exception e) {
-            System.err.println("Error refreshing game data: " + e.getMessage());
+        List<Game> games = jsonParser.readFromJsonFile();
+        if (games != null && !games.isEmpty()) {
+            collection.addAll(games);
         }
     }
+
     public List<String> getAllGenres() {
         return collection.getAllGames().stream()
                 .flatMap(game -> game.getGameGenre().stream())
@@ -297,6 +247,7 @@ public class Handler {
                 .sorted()
                 .collect(Collectors.toList());
     }
+
     public void printFilteredResults(String filterType, String filterValue, List<Game> results) {
         if (results == null || results.isEmpty()) {
             System.out.println("No games found with " + filterType + ": " + filterValue);
@@ -309,7 +260,6 @@ public class Handler {
         System.out.println("=== END OF RESULTS ===\n");
     }
 
-    // Advanced operations
     public List<Game> searchGames(String query) {
         String lowerQuery = query.toLowerCase();
         return collection.getAllGames().stream()
@@ -330,5 +280,31 @@ public class Handler {
 
     public JSONParser getJsonParser() {
         return jsonParser;
+    }
+
+    // Import/Export
+    public List<Game> importGamesFromFile(String filePath) {
+        try {
+            List<Game> importedGames = jsonParser.readFromJsonFile(filePath);
+            if (importedGames != null && !importedGames.isEmpty()) {
+                int addedCount = addGamesFromList(importedGames);
+                if (addedCount > 0) {
+                    saveCollectionToFile(); // Save to AppData after importing
+                }
+            }
+            return importedGames;
+        } catch (Exception e) {
+            System.err.println("Error importing games: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    public boolean exportGamesToFile(String filePath, List<Game> games) {
+        try {
+            return jsonParser.saveToJsonFile(filePath, games);
+        } catch (Exception e) {
+            System.err.println("Error exporting games: " + e.getMessage());
+            return false;
+        }
     }
 }
