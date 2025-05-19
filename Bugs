@@ -1,0 +1,162 @@
+JSON File Corruption
+Expected: Clean JSON file with valid game data
+ What happened: Corrupted JSON file due to incomplete write operations
+ Text output: "Error parsing JSON content: Unexpected character '' at position 123"
+ Severity: High (Data loss risk)
+
+JSON Parsing Failure
+Expected: Properly formatted JSON file
+ What happened: Unexpected end of file during JSON parsing
+ Text output: "Error parsing JSON content: Unexpected end of JSON input"
+ Severity: High (Data loss risk)
+
+Missing AppData Directory
+Expected: AppData directory exists and is writable
+ What happened: Directory creation fails due to permissions
+ Text output: "Failed to create JSON file: Access is denied"
+ Severity: High (Application won't start)
+
+AppData Directory Read-Only
+Expected: AppData directory writable
+ What happened: AppData directory exists but is read-only
+ Text output: "Failed to write JSON file: Access denied (read-only file system)"
+ Severity: High (Application won't save data)
+
+Invalid Steam ID Format
+Expected: Valid Steam ID format (numbers only)
+ What happened: Non-numeric characters in Steam ID
+ Text output: "Error parsing game object: Invalid Steam ID format"
+ Severity: Medium (Data inconsistency)
+
+Steam ID Too Short or Long
+Expected: Steam ID length within valid range
+ What happened: Steam ID is either too short or too long
+ Text output: "Error: Steam ID length invalid"
+ Severity: Medium (Data validation)
+
+Empty Game Title
+Expected: Non-empty game title
+ What happened: Empty or null title saved
+ Text output: "Warning: Game title cannot be empty"
+ Severity: Medium (UI display issues)
+
+File Lock Issues
+Expected: File available for read/write
+ What happened: File locked by another process
+ Text output: "Error saving to JSON file: The process cannot access the file because it is being used by another process"
+ Severity: High (Data loss risk)
+
+File Locked Indefinitely
+Expected: File locks released after operation
+ What happened: File lock remains indefinitely due to crashed process
+ Text output: "Error accessing JSON file: File is locked"
+ Severity: High (Application hang)
+
+Invalid Rating Value
+Expected: Rating between 0.0 and 10.0
+ What happened: Rating value outside valid range
+ Text output: "Error parsing game object: Rating must be between 0.0 and 10.0"
+ Severity: Low (UI display issues)
+
+Negative or Non-Numeric Rating
+Expected: Numeric rating between 0 and 10
+ What happened: Rating is negative or non-numeric
+ Text output: "Warning: Invalid rating value detected"
+ Severity: Low (UI display)
+
+Duplicate Steam IDs
+Expected: Unique Steam ID for each game
+ What happened: Multiple games with same Steam ID
+ Text output: "Warning: Duplicate Steam ID found: 123456789"
+ Severity: Medium (Data integrity)
+
+Duplicate Game Titles
+Expected: Unique game titles or clear differentiation
+ What happened: Multiple entries with same game title
+ Text output: "Warning: Duplicate game title found: 'Super Game'"
+ Severity: Low (UI confusion)
+
+Memory Leak in Large Lists
+Expected: Efficient memory usage
+ What happened: Memory consumption grows with large game lists
+ Text output: "OutOfMemoryError: Java heap space"
+ Severity: High (Application crash)
+
+Memory Not Released After List Clear
+Expected: Memory freed after clearing large lists
+ What happened: Memory usage stays high after list clear
+ Text output: "Warning: Possible memory leak detected"
+ Severity: High (Performance degradation)
+
+Invalid Date Format
+Expected: Valid release year format
+ What happened: Invalid date format in release year
+ Text output: "Error parsing game object: Invalid release year format"
+ Severity: Low (Data display)
+
+Future Release Year
+Expected: Release year not in the future
+ What happened: Release year set to future year
+ Text output: "Warning: Release year cannot be in the future"
+ Severity: Low (Data accuracy)
+
+Backup File Creation Failure
+Expected: Successful backup before save
+ What happened: Backup creation fails
+ Text output: "Error creating backup file: Insufficient disk space"
+ Severity: High (Data loss risk)
+
+Backup File Permission Denied
+Expected: Backup file created successfully
+ What happened: Permission denied during backup creation
+ Text output: "Error creating backup file: Access is denied"
+ Severity: High (Data loss risk)
+
+Character Encoding Issues
+Expected: Proper UTF-8 encoding
+ What happened: Special characters corrupted
+ Text output: "Error reading game data: Malformed UTF-8 sequence"
+ Severity: Medium (Data corruption)
+
+Character Encoding Mismatch
+Expected: UTF-8 encoded files
+ What happened: File saved with wrong encoding (e.g. ANSI)
+ Text output: "Warning: Character encoding mismatch detected"
+ Severity: Medium (Display errors)
+
+Invalid Platform List
+Expected: Valid platform names
+ What happened: Empty or invalid platform list
+ Text output: "Warning: Empty platform list for game: [Game Title]"
+ Severity: Low (UI display)
+
+Unknown Platforms Included
+Expected: Platform list contains known platforms only
+ What happened: Unknown or unsupported platforms included
+ Text output: "Warning: Unknown platforms detected for game: [Game Title]"
+ Severity: Low (Filtering issues)
+
+File Path Length Limit
+Expected: Valid file path length
+ What happened: Path exceeds Windows limit
+ Text output: "Error saving to JSON file: The filename or extension is too long"
+ Severity: Medium (Save failure)
+
+File Name Contains Invalid Characters
+Expected: Valid file names
+ What happened: File name contains forbidden characters
+ Text output: "Error saving file: Invalid characters in file name"
+ Severity: Medium (Save failure)
+
+Concurrent Access Issues
+Expected: Safe concurrent file access
+ What happened: Multiple instances modifying same file
+ Text output: "Error saving to JSON file: File was modified by another process"
+ Severity: High (Data corruption)
+
+Invalid Genre List
+Expected: Valid genre names
+ What happened: Empty or invalid genre list
+ Text output: "Warning: Empty genre list for game: [Game Title]"
+ Severity: Low (Filtering issues)
+
