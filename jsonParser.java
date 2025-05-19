@@ -1,35 +1,101 @@
 package com.example.gamecatalogproject;
 
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.nio.file.StandardCopyOption;
 
 public class JSONParser {
-    public ArrayList<Game> readFromJsonFile(String fileName) {
+    private static final String APP_DATA_DIR = "GameCatalogProject";
+    private static final String JSON_FILE = "list.json";
+
+    private Path getJsonFilePath() {
+        String appDataDir = System.getenv("APPDATA");
+        if (appDataDir == null || appDataDir.trim().isEmpty()) {
+            // back to user.home if APPDATA is not available
+            appDataDir = System.getProperty("user.home");
+            System.out.println("APPDATA not found, using user.home: " + appDataDir);
+        }
+        Path path = Paths.get(appDataDir, APP_DATA_DIR, JSON_FILE);
+        System.out.println("Using data path: " + path.toString());
+        return path;
+    }
+
+    private void createDefaultJsonFile(Path jsonPath) throws Exception {
+        try {
+            System.out.println("Creating new JSON file at: " + jsonPath.toString());
+            Files.createDirectories(jsonPath.getParent());
+            Files.write(jsonPath, "[]".getBytes(StandardCharsets.UTF_8),
+                    StandardOpenOption.CREATE_NEW);
+        } catch (Exception e) {
+            System.err.println("Failed to create JSON file: " + e.getMessage());
+            throw new Exception("Could not create game data file. Please check if you have write permissions.", e);
+        }
+    }
+
+    public ArrayList<Game> readFromJsonFile() {
         ArrayList<Game> result = new ArrayList<>();
 
         try {
-            // First try to load as resource from JAR
-            InputStream is = getClass().getResourceAsStream("/" + fileName);
-            String text;
+            Path jsonPath = getJsonFilePath();
+            System.out.println("Reading from data path: " + jsonPath.toString());
 
-            if (is != null) {
-                // Inside JAR
-                text = new String(is.readAllBytes(), StandardCharsets.UTF_8);
-                is.close();
-            } else {
-                // Outside JAR (development)
-                System.out.println("Attempting to load from: " + Paths.get(fileName).toAbsolutePath());
-                text = new String(Files.readAllBytes(Paths.get(fileName)), StandardCharsets.UTF_8);
+            if (!Files.exists(jsonPath)) {
+                createDefaultJsonFile(jsonPath);
+                return result;
             }
+
+            if (!Files.isReadable(jsonPath)) {
+                throw new Exception("Cannot read game data file. Please check file permissions.");
+            }
+
+            String text = new String(Files.readAllBytes(jsonPath), StandardCharsets.UTF_8);
+            if (text.trim().isEmpty()) {
+                System.out.println("Empty JSON file found, returning empty list");
+                return result;
+            }
+
+            System.out.println("Successfully read " + text.length() + " bytes from JSON file");
+
+            try {
+                if (text.trim().startsWith("[")) {
+                    JSONArray arr = new JSONArray(text);
+                    processGamesArray(arr, result);
+                } else {
+                    JSONObject obj = new JSONObject(text);
+                    if (obj.has("games")) {
+                        JSONArray arr = obj.getJSONArray("games");
+                        processGamesArray(arr, result);
+                    } else {
+                        Game game = parseGameObject(obj);
+                        if (game != null) {
+                            result.add(game);
+                        }
+                    }
+                }
+                System.out.println("Successfully loaded " + result.size() + " games from JSON");
+            } catch (Exception e) {
+                System.err.println("Error parsing JSON content: " + e.getMessage());
+                throw new Exception("Game data file is corrupted. Please restore from backup or create a new one.", e);
+            }
+        } catch (Exception exception) {
+            System.err.println("Error reading game data: " + exception.getMessage());
+            exception.printStackTrace();
+        }
+        return result;
+    }
+
+    public ArrayList<Game> readFromJsonFile(String filePath) {
+        ArrayList<Game> result = new ArrayList<>();
+        try {
+            Path jsonPath = Paths.get(filePath);
+            String text = new String(Files.readAllBytes(jsonPath), StandardCharsets.UTF_8);
 
             if (text.trim().startsWith("[")) {
                 JSONArray arr = new JSONArray(text);
@@ -47,13 +113,62 @@ public class JSONParser {
                 }
             }
         } catch (Exception exception) {
-            System.err.println("Error parsing JSON: " + exception.toString());
+            System.err.println("Error parsing JSON from file: " + exception.toString());
             exception.printStackTrace();
         }
         return result;
     }
 
-    public boolean saveToJsonFile(String fileName, List<Game> games) {
+    public boolean saveToJsonFile(List<Game> games) {
+        try {
+            if (games == null) {
+                throw new IllegalArgumentException("Games list cannot be null");
+            }
+
+            JSONArray jsonArray = new JSONArray();
+            for (Game game : games) {
+                if (game == null) {
+                    System.out.println("Warning: Skipping null game in save operation");
+                    continue;
+                }
+                JSONObject gameObj = new JSONObject();
+                gameObj.put("title", game.getGameTitle());
+                gameObj.put("developer", game.getGameDeveloper());
+                gameObj.put("publisher", game.getGamePublisher());
+                gameObj.put("genres", new JSONArray(game.getGameGenre()));
+                gameObj.put("platforms", new JSONArray(game.getGamePlatforms()));
+                gameObj.put("steamID", game.getGameSteamID());
+                gameObj.put("releaseYear", game.getGameReleaseYear());
+                gameObj.put("playtime", game.getGamePlaytime());
+                gameObj.put("tags", new JSONArray(game.getGameTags()));
+                gameObj.put("rating", game.getGameRating());
+                jsonArray.put(gameObj);
+            }
+
+            Path jsonPath = getJsonFilePath();
+            if (!Files.exists(jsonPath.getParent())) {
+                Files.createDirectories(jsonPath.getParent());
+            }
+
+           
+            if (Files.exists(jsonPath)) {
+                Path backupPath = jsonPath.resolveSibling(jsonPath.getFileName() + ".backup");
+                Files.copy(jsonPath, backupPath, StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            Files.write(jsonPath,
+                    jsonArray.toString(2).getBytes(StandardCharsets.UTF_8),
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error saving to JSON file: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean saveToJsonFile(String filePath, List<Game> games) {
         try {
             JSONArray jsonArray = new JSONArray();
             for (Game game : games) {
@@ -67,18 +182,21 @@ public class JSONParser {
                 gameObj.put("releaseYear", game.getGameReleaseYear());
                 gameObj.put("playtime", game.getGamePlaytime());
                 gameObj.put("tags", new JSONArray(game.getGameTags()));
-                gameObj.put("rating", game.getGameRating()); // Ensure rating is saved
+                gameObj.put("rating", game.getGameRating());
                 jsonArray.put(gameObj);
             }
 
-            // Save to external file
-            Files.write(Paths.get(fileName),
+            Path jsonPath = Paths.get(filePath);
+            Files.createDirectories(jsonPath.getParent());
+
+            Files.write(jsonPath,
                     jsonArray.toString(2).getBytes(StandardCharsets.UTF_8),
                     StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING);
             return true;
         } catch (Exception e) {
             System.err.println("Error saving to JSON file: " + e.toString());
+            e.printStackTrace();
             return false;
         }
     }
@@ -116,13 +234,13 @@ public class JSONParser {
 
             JSONArray tagsArray = gameObj.getJSONArray("tags");
             List<String> tags = jsonArrayToList(tagsArray);
-            String rating = gameObj.has("rating") ? gameObj.getString("rating") : "0.0"; // Added rating field
-
+            String rating = gameObj.has("rating") ? gameObj.getString("rating") : "0.0";
 
             return new Game(title, developer, publisher, genres, platforms,
-                    steamID, releaseYear, playtime, tags,rating);
+                    steamID, releaseYear, playtime, tags, rating);
         } catch (Exception e) {
-            System.out.println("Error parsing game object: " + e.toString());
+            System.err.println("Error parsing game object: " + e.toString());
+            e.printStackTrace();
             return null;
         }
     }
